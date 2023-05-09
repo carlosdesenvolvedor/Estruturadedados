@@ -1,5 +1,6 @@
 #include <stdio.h>
 //para compilar no terminal, usar gcc <nomedoarquivo.c> -o <novoNome>
+// revisão sobre ponteiros: quarda o endereço de momória.
 int main(){
 
   int *p;
