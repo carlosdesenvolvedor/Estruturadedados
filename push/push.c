@@ -39,21 +39,54 @@ No* empilhar(No *topo){
         return NULL;
     }
 }
+No* desempilhar(No **topo){
+    if(*topo != NULL){
+        No *remover = *topo;
+        *topo = remover -> proximo;
+        return remover;
+
+    }
+    else{
+        printf("\nPilha vazia!\n");
+        return NULL;
+    }
+}
+void impirmir_pilha (No *topo){
+    printf("\n--------------- PILHA -----------------------");
+    while (topo){
+        imprimir_pessoa(topo->p);
+        topo = topo->proximo;
+    }
+    
+    printf("\n------------- FIM PILHA ---------------------");
+}
 
 int main(){
-    No *topo = NULL;
+
+    No *remover, *topo = NULL;
+
     int opcao;
     do{
         printf("\n0 - Sair\n1 - Empilhar\n2 - Desempilhar\n3 - Imprimir\n");
         scanf("%d", &opcao);
         getchar();
         switch(opcao){
-            topo = empilhar(topo);
+          
             case 1:
+                topo = empilhar(topo);
                 break;
             case 2:
+                remover = desempilhar(&topo);
+                if(remover){
+                    printf("\nElemento removido com sucesso!\n");
+                    imprimir_pessoa(remover ->p);
+                }
+                else{
+                    printf("Sem no a remover!");
+                }
                 break;
-            case 4:
+            case 3:
+                impirmir_pilha(topo);
                 break;
             default:
                 if(opcao !=0){
