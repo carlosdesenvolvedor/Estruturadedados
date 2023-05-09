@@ -8,9 +8,8 @@ struct tipo_pilha
 	int topo;
 };
 
-
-
 int main(){
+	printf("teste");
 	struct tipo_pilha pilha;
 	int elemento;
 	void push(int elemento);
