@@ -19,7 +19,7 @@ void empilha(int elemento){
     if(pilha.topo == tamanho){
         //Se a pilha estiver cheia, não é possível empilhar
         printf("Pilha cheia\n");
-        system("pause");
+        
     }
     else{
         //Se a pilha não estiver cheia:
@@ -30,10 +30,43 @@ void empilha(int elemento){
 
     }
 }
+    //--------------------
+    //Função que desempilha e tetorna o elemnto do topo
+    int desempilha(){ 
+
+        //Variável que guarda um "backup" do elemento desempilhado
+        int elemento; 
+        //Verificando se existe algum elemento disponível para uma remoção
+       if(pilha.topo == pilha.ini){
+        //Se a pilha estiver vazia, não será possível desempilhar
+        printf("Pilha vazia.\n");
+        
+       }
+       else{
+        //Se a pilha não estiver vazia
+        //Decremente o topo
+        //Retorne o elemento que está no topo
+        pilha.topo--;
+        elemento = pilha.dados[pilha.topo];
+        return elemento;
+       }
+    }
+ 
 int main(){
 
     printf("Empilhando o 10\n");
     empilha(10);
     printf("Empilhando o 20\n");
     empilha(20);
+    printf("Empilhando o 30\n");
+    empilha(30);
+    printf("Empilhando o 40\n");
+    empilha(40);
+
+
+    printf("Desempilhou: %d\n", desempilha());
+    printf("Desempilhou: %d\n", desempilha());
+    printf("Desempilhou: %d\n", desempilha());
+    printf("Desempilhou: %d\n", desempilha());
+
 }
