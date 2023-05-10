@@ -68,5 +68,6 @@ int main(){
     printf("Desempilhou: %d\n", desempilha());
     printf("Desempilhou: %d\n", desempilha());
     printf("Desempilhou: %d\n", desempilha());
+    return 0;
 
 }
