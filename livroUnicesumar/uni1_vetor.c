@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+
    /*REGISTROS
 O registro é uma coleção de variáveis e, por ser uma estrutura heterogênea, permite o armazenamento de informações de tipos diferentes. Ele possibilita que o
 programador crie tipos de dados específicos e personalizados.
@@ -123,8 +124,83 @@ definir um registro chamado livro para armazenar quatro notas e depois vamos
     }
     printf("\n----------- FIM STRUCT-----------------\n\n\n");
     
+    /*PONTEIROS
+Uma variável é um objeto que representa um espaço reservado na memória.
+Quando escolhemos o tipo da variável, estamos definindo o tamanho de bytes
+que ela terá e as regras de como seus bits serão lidos, conforme foi discutido no
+início deste livro.
+Um inteiro tem 4 bytes (32 bits), assim como um
+número real, só que no número inteiro positivo todos os
+bits são significativos, enquanto na variável de ponto
+flutuante só os primeiros 24 representam valor,
+os últimos 8 determinam a posição da casa
+decimal no número.
+Por isso, quando encontramos
+uma variável de 4 bytes alocada
+na memória, precisamos saber qual
+o seu tipo para fazer a sua correta leitura.
+Ao invés de obter o valor armazenado numa variável, podemos opcionalmente obter o seu endereço na memória. 
+Por exemplo, criamos uma variável x
+do tipo inteiro; para saber qual o seu endereço, usamos a notação &x.
+ Isso significa que &x é um ponteiro que aponta para o endereço da variável x na memória.
+Também é possível usar um ponteiro como tipo de dado na declaração de
+uma variável, só que nesse caso ele não irá guardar um valor, mas sim uma posição na memória. 
+Vejamos agora exemplos de criação de variáveis e ponteiros:
+    */
+   int xi;
+   int *ptr_xi;
 
+   float xf;
+   float *ptr_xf;
 
+   char xc;
+   char *ptr_xc;
+/*A variável xi é do tipo inteiro e ptr_xi é um ponteiro que aponta para uma variável do tipo inteiro. A mesma relação existe para xf e ptr_xf, só que no caso deles
+é para armazenar um valor de ponto flutuante e um ponteiro para uma variável
+do tipo ponto flutuante. Por último, xc é uma variável do tipo caractere e ptr_xc,
+um ponteiro para um caractere.
+Segundo Tenenbaum (1995, p. 29), “[...] um ponteiro é como qualquer outro
+tipo de dado em C. O valor de um ponteiro é uma posição na memória da mesma
+forma que o valor de um inteiro é um número. Os valores dos ponteiros podem
+ser atribuídos como quaisquer outros valores”.
+A imagem a seguir simula um espaço na memória. Na parte de cima estão os
+endereços e, na de baixo, os valores contidos naquelas posições. Essa ilustração
+ajuda a entender melhor o conceito de ponteiro e a sua relação com uma variável.
+Como ptr_xi é um ponteiro, não posso simplesmente atribuir a ele o valor de xi,
+preciso, sim, atribuir o endereço que xi ocupa na memória. Para isso, usamos a
+anotação &xi, que significa “o ponteiro que aponta para o endereço na memória da variável xi”. */
+   
+
+/*Eu sei que ptr_xi contém o endereço de uma variável, mas como saber o
+valor daquele objeto? Para isso, é usada a notação *ptr_xi, que significa: “o valor
+da variável para qual aponta o ponteiro ptr_xi”. */
+
+    //Exercicio: Imprima os ponteiros declarado acima:
+ 
+         ptr_xi = &xi;
+         xi = *ptr_xi;
+    printf("\n---- Ponteiro -------\n");
+    printf("Valor de xi: %d",xi); //contudo da variavel xi
+    printf("\nValor de &xi: %p",&xi); //endereço da variavel xi
+    printf("\nValor de ptr_xi: %p",ptr_xi); //conteudo do ponteiro ptr_xi é o endereço da variavel xi
+    printf("\nValor de *ptr_xi: %d\n",*ptr_xi);//mostra uma copia do conteudo que tem na variavel do endereço guardado.
+
+    ptr_xi = &xi;
+    xi = *ptr_xi;
+
+    /*Lembrando que xi é uma variável do tipo inteiro e &xi é o ponteiro que
+aponta para o endereço onde xi está armazenada na memória. A variável ptr_xi
+é um ponteiro para um inteiro e *ptr_xi é o valor para o qual o ponteiro ptr_xi
+está apontando.
+Dentro da função main(), vamos atribuir o valor 10 para xi e o valor de &xi
+para ptr_xi. Em seguida, vamos chamar a função imprimir() e observar o resultado.*/
+    xi = 10;
+    ptr_xi = &xi;
+    printf("\n---- Ponteiro depois da atribuição -------\n");
+    printf("Valor de xi: %d",xi); //contudo da variavel xi
+    printf("\nValor de &xi: %p",&xi); //endereço da variavel xi
+    printf("\nValor de ptr_xi: %p",ptr_xi); //conteudo do ponteiro ptr_xi é o endereço da variavel xi
+    printf("\nValor de *ptr_xi: %d\n",*ptr_xi);//mostra uma copia do conteudo que tem na variavel do endereço guardado.
 
 
     return 0;
