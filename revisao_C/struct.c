@@ -37,11 +37,6 @@ Aluno aluno, aluno2;
     printf("\nSexo: %c\n",aluno.sexo);
     printf("segundo aluno:\n");
     printf("nome: %s\nSexo: %c\nIdade:%d anos",aluno2.nome,aluno2.sexo,aluno2.idade);
-
-
-    
-    
-    
     
     return 0;
 
