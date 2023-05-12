@@ -1,21 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
-int xi;
-int *ptr_xi;
-void imprimir() {
- printf("Valor de xi = %d \n", xi);
- printf("Valor de &xi = %p \n", &xi);
- printf("Valor de ptr_xi = %p \n", ptr_xi);
- printf("Valor de *ptr_xi = %d \n\n", *ptr_xi);
-}
+int a;
+int b;
+a = 10;
+b = 12;
 int main() {
- xi = 10;
- ptr_xi = &xi;
- imprimir();
- xi = 20;
- imprimir();
- *ptr_xi = 30;
- imprimir();
+    
+ printf("%d\n", a);
+ printf("%d",b);
+ 
+
  system("Pause");
  return(0);
 }
