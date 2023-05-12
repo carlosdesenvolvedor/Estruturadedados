@@ -202,6 +202,41 @@ para ptr_xi. Em seguida, vamos chamar a função imprimir() e observar o resulta
     printf("\nValor de ptr_xi: %p",ptr_xi); //conteudo do ponteiro ptr_xi é o endereço da variavel xi
     printf("\nValor de *ptr_xi: %d\n",*ptr_xi);//mostra uma copia do conteudo que tem na variavel do endereço guardado.
 
+    /*Note que o valor de ptr_xi é o mesmo que &xi, posto que, quando usamos
+a notação &xi, conseguimos o endereço de memória da variável xi e o ponteiro
+ptr_xi está apontando exatamente para ele. Quando usamos a notação *ptr_xi,
+conseguimos acessar o endereço de xi e resgatar o seu valor armazenado.
+*/
+
+    printf("\nVamos fazer algo diferente agora. Após as atribuições iniciais, antes de chamar a função imprimir(), vamos alterar o valor da variável xi para 20\n");
+    xi = 10;
+    ptr_xi = &xi;
+    xi = 20;
+    printf("\n---- Ponteiro depois da atribuição -------\n");
+    printf("Valor de xi: %d",xi); //contudo da variavel xi
+    printf("\nValor de &xi: %p",&xi); //endereço da variavel xi
+    printf("\nValor de ptr_xi: %p",ptr_xi); //conteudo do ponteiro ptr_xi é o endereço da variavel xi
+    printf("\nValor de *ptr_xi: %d\n",*ptr_xi);//mostra uma copia do conteudo que tem na variavel do endereço guardado.
+
+    /*Tanto ptr_xi quanto &xi mantêm o mesmo valor, posto que não houve alteração da posição na memória que ocupa a variável xi. Apesar de termos alterado
+apenas o valor de xi, porém, o valor de *ptr_xi também aparece diferente. Como
+isso é possível? Como o ponteiro ptr_xi aponta para a variável xi, qualquer alteração feita em seu conteúdo irá refletir automaticamente quando verificamos o
+valor de *ptr_xi.
+Vamos fazer mais uma alteração agora, aproveitando tudo o que já foi feito.
+Só que ao invés de alterar o valor de xi, vamos tentar alterar o valor de *ptr_xi
+para 30.*/
+    xi = 10;
+    ptr_xi = &xi;
+    xi = 20;
+    *ptr_xi = 30;
+    printf("\nVamos fazer mais uma alteração agora, aproveitando tudo o que já foi feito. Só que ao invés de alterar o valor de xi, vamos tentar alterar o valor de *ptr_xi para 30.");
+    printf("\n---- Ponteiro depois da atribuição -------\n");
+    printf("Valor de xi: %d",xi); //contudo da variavel xi
+    printf("\nValor de &xi: %p",&xi); //endereço da variavel xi
+    printf("\nValor de ptr_xi: %p",ptr_xi); //conteudo do ponteiro ptr_xi é o endereço da variavel xi
+    printf("\nValor de *ptr_xi: %d\n",*ptr_xi);//mostra uma copia do conteudo que tem na variavel do endereço guardado.
+
+
 
     return 0;
 }
