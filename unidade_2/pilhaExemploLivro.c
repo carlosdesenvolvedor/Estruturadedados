@@ -15,7 +15,7 @@ struct tpilha{
 //Variáveis globais
 struct tpilha pilha;
 int op;
-//Protipação, funções serão feitas após a função principal;
+//Prototipação, funções serão feitas após a função principal;
 void pilha_entrar();
 void pilha_sair();
 void pilha_mostrar();
@@ -28,7 +28,7 @@ int main(){
 	pilha.ini = 0;
 	pilha.fim = 0;
 	while (op != 0){
-		system("cls");
+		system("cls"); //limpa tela
 		pilha_mostrar();
 		menu_mostrar();
 		scanf("%d",&op);
@@ -50,6 +50,7 @@ int main(){
 	return 0;
 }
 //Adicionar um elemtno no final da Pilha: push
+//Função pilha_entrar(), que faz checagem do topo da pilha e insere novos valores no vetor dados.
 void pilha_entrar(){
 	if(pilha.fim == tamanho){
 		printf("\nA pilha está cheia, impossível empilhar!\n\n");
@@ -62,6 +63,8 @@ void pilha_entrar(){
 	}
 }
 //Retirar o último elemento da pilha POP
+ //Função pilha_sair(), que verifica se existem elementos na pilha e remove o
+//último inserido.
 void pilha_sair(){
 	if(pilha.ini == pilha.fim){
 		printf("\nA pilha está vazia, impossível desempilhar!\n\n");
@@ -74,6 +77,7 @@ void pilha_sair(){
 
 }
 //Mostrar o conteúdo da Pilha
+//Função pilha_mostrar(), que lê o conteúdo e desenha o vetor dados na tela.
 void pilha_mostrar(){
 	int i;
 	printf("[ ");
@@ -83,6 +87,7 @@ void pilha_mostrar(){
 	printf("]\n\n");
 }
 //Mostrar o menu de opções:
+//Função menu_mostrar(), que desenha na tela as opções permitidas para o usuário.
 void menu_mostrar(){
 	printf("\nEscolha uma opção: \n");
 	printf("1 - Empilhar\n2 - Desempilhar\n0 - Sair\n\n");
