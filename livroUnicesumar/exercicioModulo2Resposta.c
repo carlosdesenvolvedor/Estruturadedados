@@ -4,36 +4,36 @@
 (inteiro).*/
 
 typedef struct {
-    char cor;
+    char cor[10];
     int id;
 }Semaforo;
 //b) Crie três variáveis com o tipo definido no item a.
-Semaforo Vermelho;
-Semaforo Amarelo;
-Semaforo Verde;
-//c) Crie um ponteiro do mesmo tipo
-Semaforo *ptr_semaforo; 
-
-main() {
-    /*d) Inicialize as estruturas da seguinte forma:
+ /*d) Inicialize as estruturas da seguinte forma:
 • cor vermelha, id 1.
 • cor amarela, id 2.
 • cor verde, id 3.*/
-    Vermelho.id = 1;
-    Amarelo.id = 2;
-    Verde.id = 3;
-//e) Inicialize o ponteiro apontando para a primeira variável criada
 
-    ptr_semaforo = &Vermelho.id;
-    
+//e) Inicialize o ponteiro apontando para a primeira variável criada
+Semaforo s1 = {"vermelho", 1};
+Semaforo s2 = {"Amarelo", 2};
+Semaforo s3 = {"Verde",3};
+
+//c) Crie um ponteiro do mesmo tipo
+Semaforo *ptr_s; 
+
+main() {
+   ptr_s = &s1; 
 /*Por meio de operações aritméticas com ponteiros, percorra a 
 memória e imprima o valor de cada uma das variáveis criadas nesse programa.*/
-    
-    printf("\nValor vermelho:%d \n",*ptr_semaforo);
-    ptr_semaforo = &Amarelo.id;
-    printf("\nValor Amarelo:%d \n",*ptr_semaforo);
-    ptr_semaforo = &Verde.id;
-    printf("\nValor verde:%d \n",*ptr_semaforo);
+   printf("Valor %s: id: %d",(ptr_s)->cor,(ptr_s)->id); 
+   ptr_s++;
+   printf("\nValor %s: id %d",(ptr_s)->cor,(ptr_s)->id);
+   ptr_s++;
+   printf("\nValor %s: id %d",(*ptr_s).cor,(*ptr_s).id);
+
+
+
+
 
     
 
