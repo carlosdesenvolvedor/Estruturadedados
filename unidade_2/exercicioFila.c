@@ -119,7 +119,7 @@ void desenfileirar(){
 		for(int i = 0; i<tamanho;i++){
 			fila.dados[i].hora = fila.dados[i+1].hora;
 			fila.dados[i].min = fila.dados[i+1].min;
-			fila.dados[i].min = fila.dados[i+1].min;
+			fila.dados[i].seg = fila.dados[i+1].seg;
 			strcpy(fila.dados[i].nome,fila.dados[i+1].nome);
 
 		}
@@ -136,7 +136,7 @@ void fila_mostrar(){
 	
 	
 	for(i = 0; i< tamanho;i++){
-		printf("-------------  %d a chegar --------\n",i+1);
+		printf("-------------  %d° da fila --------\n",i+1);
 		printf("nome:%s\nhora: %d:%d:%d\n", fila.dados[i].nome,fila.dados[i].hora,fila.dados[i].min,fila.dados[i].seg);
 		printf("-------------- FIM ------------\n");
 	}
