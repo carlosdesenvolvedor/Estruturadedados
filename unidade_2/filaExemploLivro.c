@@ -54,7 +54,7 @@ void fila_entrar(){
 	}
 	else{
 		printf("\nDigite o valor a ser inserido:");
-		scanf("%d", &fila.dados[fila.fim]);
+		scanf("%d", &fila.dados[fila.fim]); 
 		fila.fim++;
 	}
 }
