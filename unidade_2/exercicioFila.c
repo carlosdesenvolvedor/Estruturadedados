@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include <locale.h>
 #include <string.h>
-
+#include <time.h> //necessário para usar localtime() e struct tm
 //Constantes:
+ 
 #define tamanho 5
 void flush_in(){
 	int ch;
@@ -13,28 +14,29 @@ void flush_in(){
 }
 
 //Estrutura da pilha
-/*a) Crie uma estrutura para a pilha de livros. Lembre-se de que ela tem que ter
-um vetor para armazenar os dados (código, nome do livro e autor) e dois
-números inteiros, um para controlar o início e outro o final da pilha.*/
-struct tlivros{
-	int codigo; //vetor com o tamanho do difine;
-	char nomeLivro[50];
-	char autor[50];
+/*a) Faça uma estrutura para o controle da fila. Você precisa guardar o nome e
+a hora que o cliente chegou. Use um vetor para armazenar os dados e dois
+números inteiros, um para controlar o início e outro o final da fila.*/
+struct tclientes{
+	struct tm *data_hora_atual;
+	char nome[50];
+	char hora[50];
  
 };
-struct tpilha{
-	struct tlivros dados[tamanho];
+struct tfila{
+	struct tclientes dados[tamanho];
 	int ini;
 	int fim;
 };
 //Variáveis globais
-/*b) Defina a variável que será um vetor do tipo pilha de livros*/
-struct tpilha pilha;
+/*b) Defina a variável que será um vetor do tipo fila de clientes.*/
+struct tfila fila;
 int op;
+  
 //Prototipação, funções serão feitas após a função principal;
-void pilha_entrar();
-void pilha_sair();
-void pilha_mostrar();
+void fila_entrar();
+void fila_sair();
+void fila_mostrar();
 void menu_mostrar();
 //
 
@@ -69,22 +71,22 @@ int main(){
 }
 //Adicionar um elemtno no final da Pilha: push
 //Função pilha_entrar(), que faz checagem do topo da pilha e insere novos valores no vetor dados.
-/*c) Faça uma função de empilhamento, lembrando-se de verificar se a pilha
-atingiu o tamanho máximo de livros (a mesa não aguenta muito peso)*/
-void pilha_entrar(){
-	if(pilha.fim == tamanho){
-		printf("\nA pilha está cheia, impossível empilhar!\n\n");
+/*c) Crie uma função enfileirar, lembrando que é preciso verificar se há espaço
+na fila (o número de cadeiras na recepção é limitado).*/
+void fila_entrar(){
+	if(fila.fim == tamanho){
+		printf("\nA Fila está cheia, Aguarde fora do estabelecimento!\n\n");
 		system("pause");
 	}
 	else{
-		printf("\nDigite o código do livro: ");
-		scanf("%d",&pilha.dados[pilha.fim].codigo);
-		flush_in();
-		printf("\nDigite o nome do livro: ");
-		fgets(pilha.dados[pilha.fim].nomeLivro,50,stdin);
-		printf("\nDigite o Autor do livro: ");
-		fgets(pilha.dados[pilha.fim].autor,50,stdin);
-		pilha.fim++;
+		printf("\nDigite o nome do Cliente: ");
+		fgets(fila.dados[fila.fim].nome,50,data);
+		fila.dados[fila.fim].hora = {data_hora_atual};
+		fgets(fila.dados[fila.fim].hora,50,stdin);
+		printf("\nHora ........: %d:",data_hora_atual->tm_hour);//hora   
+		printf("%d:",data_hora_atual->tm_min);//minuto
+		printf("%d\n",data_hora_atual->tm_sec);//segundo
+		fila.fim++;
 	}
 }
 //Retirar o último elemento da pilha POP
