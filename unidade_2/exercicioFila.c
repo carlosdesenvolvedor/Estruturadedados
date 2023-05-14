@@ -18,9 +18,12 @@ void flush_in(){
 a hora que o cliente chegou. Use um vetor para armazenar os dados e dois
 números inteiros, um para controlar o início e outro o final da fila.*/
 struct tclientes{
-	struct tm *data_hora_atual;
+	
+	
 	char nome[50];
-	char hora[50];
+	int hora;
+	int min;
+	int seg;
  
 };
 struct tfila{
@@ -52,6 +55,7 @@ int main(){
 		fila_mostrar();
 		menu_mostrar();
 		scanf("%d",&op);
+		fflush(stdin);
 		switch (op)
 		{
 		case 1:
@@ -79,11 +83,20 @@ void enfileirar(){
 		system("pause");
 	}
 	else{
+
 		printf("\nDigite o nome do Cliente: ");
-		fgets(fila.dados[fila.fim].nome,50,stdin);
+		fgets(fila.dados[fila.fim].nome,50,stdin); //pega o nome do cliente atraves do teclado
+
+		struct tm *data_hora_atual;
+		time_t segundos;
+ 		time(&segundos);  
+		data_hora_atual = localtime(&segundos);
+		// printf("\nHora ........: %d:",data_hora_atual->tm_hour);//hora   
+		// system("pause");
+		fila.dados[fila.fim].hora = data_hora_atual->tm_hour; //pega a hora
+		fila.dados[fila.fim].min = data_hora_atual->tm_min; //pega o minito atual
+		fila.dados[fila.fim].seg = data_hora_atual->tm_sec; //pega o segundo atual
 		
-		
-		strcpy(fila.dados[fila.fim].hora,fila.dados->data_hora_atual);
 		
 		// fgets(fila.dados[fila.fim].hora,50,stdin);
 		// printf("\nHora ........: %d:",data_hora_atual->tm_hour);//hora   
@@ -103,8 +116,13 @@ void desenfileirar(){
 		system("pause");
 	}
 	else{
-		strcpy(fila.dados[fila.fim-1].nome,"");
-		strcpy(fila.dados[fila.fim-1].hora,""); //revisar cópia de strings
+		for(int i = 0; i<tamanho;i++){
+			fila.dados[i].hora = fila.dados[i+1].hora;
+			fila.dados[i].min = fila.dados[i+1].min;
+			fila.dados[i].min = fila.dados[i+1].min;
+			strcpy(fila.dados[i].nome,fila.dados[i+1].nome);
+
+		}
 		fila.fim--; //retrocede o fim para posição enterior
 	}
 
@@ -118,8 +136,8 @@ void fila_mostrar(){
 	
 	
 	for(i = 0; i< tamanho;i++){
-		printf("------------- Cliente %d --------\n",i+1);
-		printf("nome:%s\nhora: %s\n", fila.dados[i].nome,fila.dados[i].hora);
+		printf("-------------  %d a chegar --------\n",i+1);
+		printf("nome:%s\nhora: %d:%d:%d\n", fila.dados[i].nome,fila.dados[i].hora,fila.dados[i].min,fila.dados[i].seg);
 		printf("-------------- FIM ------------\n");
 	}
 	printf("\n\n");
