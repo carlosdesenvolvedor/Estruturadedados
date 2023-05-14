@@ -34,8 +34,8 @@ struct tfila fila;
 int op;
   
 //Prototipação, funções serão feitas após a função principal;
-void fila_entrar();
-void fila_sair();
+void enfileirar();
+void desenfileirar();
 void fila_mostrar();
 void menu_mostrar();
 //
@@ -45,20 +45,20 @@ int main(){
 
 	
 	op = 1;
-	pilha.ini = 0;
-	pilha.fim = 0;
+	fila.ini = 0;
+	fila.fim = 0;
 	while (op != 0){
-		system("clear"); //limpa tela
-		pilha_mostrar();
+		system("cls"); //limpa tela
+		fila_mostrar();
 		menu_mostrar();
 		scanf("%d",&op);
 		switch (op)
 		{
 		case 1:
-			pilha_entrar();
+			enfileirar();
 			break;
 		case 2:
-			pilha_sair();
+			desenfileirar();
 			break;
 		default:
 			break;
@@ -73,51 +73,53 @@ int main(){
 //Função pilha_entrar(), que faz checagem do topo da pilha e insere novos valores no vetor dados.
 /*c) Crie uma função enfileirar, lembrando que é preciso verificar se há espaço
 na fila (o número de cadeiras na recepção é limitado).*/
-void fila_entrar(){
+void enfileirar(){
 	if(fila.fim == tamanho){
 		printf("\nA Fila está cheia, Aguarde fora do estabelecimento!\n\n");
 		system("pause");
 	}
 	else{
 		printf("\nDigite o nome do Cliente: ");
-		fgets(fila.dados[fila.fim].nome,50,data);
-		fila.dados[fila.fim].hora = {data_hora_atual};
-		fgets(fila.dados[fila.fim].hora,50,stdin);
-		printf("\nHora ........: %d:",data_hora_atual->tm_hour);//hora   
-		printf("%d:",data_hora_atual->tm_min);//minuto
-		printf("%d\n",data_hora_atual->tm_sec);//segundo
+		fgets(fila.dados[fila.fim].nome,50,stdin);
+		
+		
+		strcpy(fila.dados[fila.fim].hora,fila.dados->data_hora_atual);
+		
+		// fgets(fila.dados[fila.fim].hora,50,stdin);
+		// printf("\nHora ........: %d:",data_hora_atual->tm_hour);//hora   
+		// printf("%d:",data_hora_atual->tm_min);//minuto
+		// printf("%d\n",data_hora_atual->tm_sec);//segundo
 		fila.fim++;
 	}
 }
 //Retirar o último elemento da pilha POP
  //Função pilha_sair(), que verifica se existem elementos na pilha e remove o
 //último inserido.
-/*C) Crie uma função para desempilhamento de livros. Não se esqueça de que é
-necessário verificar se ainda existem livros para ser guardados.*/
-void pilha_sair(){
-	if(pilha.ini == pilha.fim){
-		printf("\nA pilha está vazia, impossível desempilhar!\n\n");
+/*d) Elabore a função desenfileirar cliente, não se esqueça de que é necessário
+verificar se ainda existem clientes para serem atendidos.*/
+void desenfileirar(){
+	if(fila.ini == fila.fim){
+		printf("\nA fila está vazia, mas logo aparece alguém para voce trabalhar!\n\n");
 		system("pause");
 	}
 	else{
-		pilha.dados[pilha.fim-1].codigo = 0; //limpa o epaço
-		strcpy(pilha.dados[pilha.fim-1].nomeLivro,"");
-		strcpy(pilha.dados[pilha.fim-1].autor,""); //revisar cópia de strings
-		pilha.fim--; //retrocede o fim para posição enterior
+		strcpy(fila.dados[fila.fim-1].nome,"");
+		strcpy(fila.dados[fila.fim-1].hora,""); //revisar cópia de strings
+		fila.fim--; //retrocede o fim para posição enterior
 	}
 
 }
 //Mostrar o conteúdo da Pilha
 //Função pilha_mostrar(), que lê o conteúdo e desenha o vetor dados na tela.
-/*Elabore uma função que apresente na tela a lista de todos os livros que se
-encontram empilhados ao lado da recepção.*/
-void pilha_mostrar(){
+/*e) Faça uma função que apresente na tela a lista de todos os clientes que estão
+aguardando atendimento na recepção..*/
+void fila_mostrar(){
 	int i;
 	
 	
 	for(i = 0; i< tamanho;i++){
-		printf("------------- livro %d --------\n",i+1);
-		printf("código: %d\nlivro: %sautor: %s\n", pilha.dados[i].codigo,pilha.dados[i].nomeLivro,pilha.dados[i].autor);
+		printf("------------- Cliente %d --------\n",i+1);
+		printf("nome:%s\nhora: %s\n", fila.dados[i].nome,fila.dados[i].hora);
 		printf("-------------- FIM ------------\n");
 	}
 	printf("\n\n");
