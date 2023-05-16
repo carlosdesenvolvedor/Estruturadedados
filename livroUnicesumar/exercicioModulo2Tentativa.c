@@ -24,11 +24,11 @@ main() {
     Verde.id = 3;
 //e) Inicialize o ponteiro apontando para a primeira variável criada
 
-    ptr_semaforo = &Vermelho.id;
+    
     
 /*Por meio de operações aritméticas com ponteiros, percorra a 
 memória e imprima o valor de cada uma das variáveis criadas nesse programa.*/
-    
+    ptr_semaforo = &Vermelho.id; 
     printf("\nValor vermelho:%d \n",*ptr_semaforo);
     ptr_semaforo = &Amarelo.id;
     printf("\nValor Amarelo:%d \n",*ptr_semaforo);
