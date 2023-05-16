@@ -12,6 +12,7 @@ typedef struct {
 • cor vermelha, id 1.
 • cor amarela, id 2.
 • cor verde, id 3.*/
+ 
 
 //e) Inicialize o ponteiro apontando para a primeira variável criada
 Semaforo s1 = {"vermelho", 1};
