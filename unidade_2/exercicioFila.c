@@ -51,11 +51,13 @@ int main(){
 	fila.ini = 0;
 	fila.fim = 0;
 	while (op != 0){
-		system("cls"); //limpa tela
+		//system("cls"); //limpa tela windows
+		system("clear"); //limpa tela
 		fila_mostrar();
 		menu_mostrar();
 		scanf("%d",&op);
-		fflush(stdin);
+		//fflush(stdin);
+		flush_in();
 		switch (op)
 		{
 		case 1:
@@ -80,7 +82,8 @@ na fila (o número de cadeiras na recepção é limitado).*/
 void enfileirar(){
 	if(fila.fim == tamanho){
 		printf("\nA Fila está cheia, Aguarde fora do estabelecimento!\n\n");
-		system("pause");
+		//system("pause"); //windows
+		getchar();
 	}
 	else{
 
@@ -113,7 +116,9 @@ verificar se ainda existem clientes para serem atendidos.*/
 void desenfileirar(){
 	if(fila.ini == fila.fim){
 		printf("\nA fila está vazia, mas logo aparece alguém para voce trabalhar!\n\n");
-		system("pause");
+		//system("pause"); //para windows
+		getchar();
+		
 	}
 	else{
 		for(int i = 0; i<tamanho;i++){
@@ -141,9 +146,9 @@ void fila_mostrar(){
 	
 	
 	for(i = 0; i< tamanho;i++){
-		printf("-------------  %d° da fila --------\n",i+1);
+		printf("%d° da fila\n",i+1);
 		printf("nome:%s\nhorario de chegada: %d:%d:%d\n", fila.dados[i].nome,fila.dados[i].hora,fila.dados[i].min,fila.dados[i].seg);
-		printf("-------------- FIM ------------\n");
+		printf("-------------- FIM ------------\n\n");
 	}
 	printf("\n\n");
 }
@@ -151,5 +156,5 @@ void fila_mostrar(){
 //Função menu_mostrar(), que desenha na tela as opções permitidas para o usuário.
 void menu_mostrar(){
 	printf("\nEscolha uma opção: \n");
-	printf("1 - Empilhar\n2 - Desempilhar\n0 - Sair\n\n");
+	printf("1 - Entrar na fila\n2 - Atender\n0 - Sair\n\n");
 }
