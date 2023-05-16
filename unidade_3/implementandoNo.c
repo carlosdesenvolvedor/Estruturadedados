@@ -26,12 +26,13 @@ e o ponteiro proximo apontando para null:*/
 //prototipo
 void menu_mostrar();
 void menu_selecinar(int op);
-void lista_mostrar();
-void lista_mostrar_2();
-void lista_inserir();
-void lista_remover();
+void lista_mostrar(ptr_no lista);
+void lista_mostrar_2(ptr_no lista);
+void lista_inserir(ptr_no lista);
+void lista_remover(ptr_no lista);
 
 int main(){
+    
     //Inicializando máquina de números randômicos
     srand(time(NULL));
     op = 1;
@@ -41,7 +42,7 @@ int main(){
     lista->proximo = NULL;
     //Laço principal
     while(op != 0){
-        system("cls");
+      
         menu_mostrar();
         scanf("%d", &op);
         menu_selecinar(op);
@@ -65,7 +66,7 @@ void lista_mostrar(ptr_no lista){
     }
 }
 void lista_mostrar_2(ptr_no lista){
-    system("cls");
+    
     while(lista->proximo !=NULL){
         printf("%d, ", lista->dado);
         lista = lista->proximo;
@@ -90,11 +91,14 @@ void lista_remover(ptr_no lista){
     scanf("%d",&dado);
     while((lista->dado != dado)){
         
-        if(lista->dado == dado){
-                atual->proximo = lista->proximo;
+        if(lista->proximo == NULL){
+                break;
             }
         atual = lista;
         lista = lista->proximo;
+    }
+    if(lista->dado == dado){
+        atual->proximo = lista->proximo;
     }
     
 }
