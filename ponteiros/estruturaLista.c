@@ -46,6 +46,8 @@ void inserirFim(Lista *lista, int valor){
     lista->tam++;
 
 }
+
+
 //remover um elemento da lista:
 void removerInicio(Lista *lista,int valor){
     No *inicio = lista->inicio; // para percorrer esta lista procurando o elemento a ser removido.
