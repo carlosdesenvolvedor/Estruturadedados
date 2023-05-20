@@ -19,12 +19,13 @@ void insereNoinicio(int elemento){
     ptr->dado = elemento; //este local recebe o meu dado inserido 
     ptr->prox = NULL; //o último elemento sempre aponta para null
     if(l.ini == NULL){ //se o inicio da lista for nulo,ou seja a lista estiver vazia
-        l.ini = ptr; //
+        l.fim = ptr; //
     }
     else{//nesse caso vai ter um elemento que l.ini aponta, o novo elemento precisa entrar antes
         ptr->prox = l.ini; //pindurei esse elemento no inicio
+    
     }
-     l.fim = ptr; //agora o inicio está apontando para o novo primeiro elemento
+     l.ini = ptr; //agora o inicio está apontando para o novo primeiro elemento
 }
 
 void insersaoNofim(int elemento){
