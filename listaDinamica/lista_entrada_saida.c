@@ -41,6 +41,21 @@ void insersaoNofim(int elemento){
     }
         l.fim = ptr; //o fim estava apontando para o penultimo, aqui ele atualiza e aponta para o último.
 }
+int removeDoInicio(){
+    NO* ptr = l.ini;
+    int elemento;
+    if(ptr == NULL){
+        printf("A lista já está vazia!!\n");
+        return -1;
+    }else{
+        l.ini = l.ini->prox;
+        ptr->prox = NULL;
+        elemento = ptr->dado;
+        free(ptr);
+        return elemento;
+    }
+}
+
 void imprimir(){
     NO* ptr = l.ini;
     printf("\ninicio ->");
@@ -55,6 +70,7 @@ void menu(){
     printf("1 - Para inserir no inicio da lista\n");
     printf("2 - Para inserir no fim da lista\n");
     printf("3 - para imprimir o conteudo da lista\n");
+    printf("4 - para remover o inicio da lista\n");
     printf("0 - para encerrar\n");
 
     }
@@ -95,7 +111,17 @@ int main(){
             printf("dados coletados");
             imprimir();
             system("pause");
-            break;      
+            break;    
+        case 4:
+            dado = removeDoInicio(); 
+            if(dado == -1){
+                printf("Erro\n");
+                system("pause");
+            }else{
+                printf("Removendo o elemento %d do inicio da lista.\n",dado);
+                system("pause");
+            }
+            break;
         default:
             break;
         }
