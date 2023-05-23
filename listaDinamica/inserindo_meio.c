@@ -18,7 +18,7 @@ Lista lista;
 void inserirInicio(int dado){
     //alocação para receber os dados;
     NO *novoMorador = (NO*)malloc(sizeof(NO));
-    int dado;
+    
     if(novoMorador == NULL){
         printf("nao foi possivel alocar memoria!!");
     }else{
@@ -67,7 +67,7 @@ void inserirFim(int dado){
 
 }
 void imprimir(){
-    NO* moradores = lista.ini;
+    NO *moradores = lista.ini;
     printf("-> ");
     while(moradores != NULL){
         printf("%d ",moradores->dado );
@@ -77,34 +77,43 @@ void imprimir(){
 }
 
 void menu(){
-    int op;
-    NO presente;
+      
     
-    
-    printf("1 - inserir no inicio"
+    printf("\n1 - inserir no inicio"
            " \n2- inserir no final"
-            "\n3 - sair \n");
+            "\n3 - imprimir \n0 - sair\n");
             
-            scanf("%d ",&op);
-            switch (op)
-            {
-            case 1:
-                printf("digite o valor: ");
-                scanf("%d ", &presente.dado);
-                inserirInicio(presente.dado);
-                break;
-            case 2:
-                inserirFim(presente.dado);
-            default:
-                break;
-            }
-            
+   
 }
 
 
 int main(){
+    int op,dado;
+    lista.ini = NULL;
+    lista.fim = NULL;
+    do{ 
+        menu();
+        scanf("%d", &op);
+        fflush(stdin);
+        system("cls");
+        switch (op)
+        {
+        case 1:
+            printf("digite o valor: ");
+            scanf("%d", &dado);
+            fflush(stdin);
+            inserirInicio(dado);
+            system("pause");
+            break;
+        case 3:
+            imprimir();
+        default:
+               break;
+            }
 
-    menu();
+    }while(op !=0);
+
+   
   
     
     
