@@ -4,7 +4,7 @@
 
 typedef struct NO{
     int dado;
-    struct endereco *prox;
+    struct NO *prox;
 }NO;
 
 typedef struct Lista{
@@ -28,7 +28,7 @@ void inserirInicio(int dado){
         novoMorador->prox = NULL;//para o caso de ser o primeiro elemento, ele vai apontar para lugar nenhum
         
         if(lista.ini == NULL){
-            lista.ini = novoMorador;
+           
             lista.fim = novoMorador;
         }else{
            
@@ -37,16 +37,18 @@ void inserirInicio(int dado){
                                         //eu vou entrar antes dele, então preciso receber o endereço
                                         //que o inicio tem, pois esse será o endereço
                                         //do meu proximo.
-            lista.ini = novoMorador; //em seguida, eu faço o inicio da lista receber meu endereço.
+             
+        }
+        lista.ini = novoMorador;
+        //em seguida, eu faço o inicio da lista receber meu endereço.
         //resumindo, eu vou estar com endereço do que estáva no inicio e o inicio vai ter meu endereço.
         
-        }
         
     }
 }
 
 void inserirFim(int dado){
-    NO *novoMorador = (NO *)malloc(sizeof(NO));
+    NO *novoMorador = (NO*)malloc(sizeof(NO));
     if(novoMorador == NULL){
         printf("Erro de alocacao");
     }else{
@@ -55,14 +57,14 @@ void inserirFim(int dado){
 
         if(lista.ini = NULL){
             lista.ini = novoMorador;
-            lista.fim = novoMorador;
+    
         }else{
             lista.fim->prox = novoMorador; //faço o meu fim.prox que 
                             //possui o endereço do proximo elemento que seria NULL
                             // apontar para o novo elemento.
-            lista.fim = novoMorador;
+           
         }
-        
+         lista.fim = novoMorador;
     }
 
 }
@@ -99,23 +101,28 @@ int main(){
         switch (op)
         {
         case 1:
-            printf("digite o valor: ");
+            printf("Digite para inserir no inicio: \n");
             scanf("%d", &dado);
             fflush(stdin);
             inserirInicio(dado);
             system("pause");
             break;
+        case 2:
+            printf("Digite para inserir no final: \n");
+            scanf("%d", &dado);
+            fflush(stdin);
+            inserirFim(dado);
+            system("pause");
+            break;
         case 3:
             imprimir();
+            break;
         default:
-               break;
+            break;
             }
-
     }while(op !=0);
 
    
-  
-    
-    
+
     return 0;
 }
