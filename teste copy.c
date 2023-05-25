@@ -37,12 +37,14 @@ int main(){
     lista->next = NULL;
     //Laço principal
     while (op !=0){
-    system("cls");
+    //system("cls");
+    system("clear");
     menu_mostrar();
     scanf("%d", &op);
     menu_selecionar(op);
     }
-    system("Pause");
+    //system("Pause");
+    getchar();
     return(0);
     
 
@@ -89,7 +91,8 @@ int remover(ELEMENTO* head){
 }
 
 void pilha_mostrar(ELEMENTO* head){
- system("cls");
+ //system("cls");
+ system("clear");
  while(head->next != NULL) {
  printf("%d, ", head->next);
  head = head->next;
