@@ -24,5 +24,7 @@ main() {
     printf ("Posicao %d: %d\n", i, vetor[i]);
     }
     system("Pause");
+
  return(0);
+ 
 }

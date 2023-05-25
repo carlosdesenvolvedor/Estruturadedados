@@ -13,7 +13,7 @@
 
 int main(){
     /*<ponteiro> = (cast: tipo de dados)*  malloc(<tam. em bytes>); */
-    /*Free(libera o esaço de memória alocado a um onteiro) free<pontiro>*/
+    /*Free(libera o esaço de memória alocado a um ponteiro) free<pontiro>*/
     /*Malloc() vai vasculhar a memória e encontrar um espaço da memório*/
     
     int *p;

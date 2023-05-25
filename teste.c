@@ -1,120 +1,96 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <locale.h>
 
-typedef struct NO{
-    int dado;
-    struct endereco *prox;
-}NO;
-
-typedef struct Lista{
-    //aqui vai ter o endereço do fim e do começo da lista
-    NO *ini;
-    NO *fim;
-}Lista;
-Lista lista;
-
-//para inserir no inicio da lista...
-void inserirInicio(int dado){
-    //alocação para receber os dados;
-    NO *novoMorador = (NO*)malloc(sizeof(NO));
-    
-    if(novoMorador == NULL){
-        printf("nao foi possivel alocar memoria!!");
-    }else{
-        
-       
-        novoMorador->dado = dado;
-        novoMorador->prox = NULL;//para o caso de ser o primeiro elemento, ele vai apontar para lugar nenhum
-        
-        if(lista.ini == NULL){
-            lista.ini = novoMorador;
-            lista.fim = novoMorador;
-        }else{
-           
-            //se a lista.ini não estiver vazia ela aponta para algum elemento
-            novoMorador->prox = lista.ini; //como já existe um morador que está no inicio da lista
-                                        //eu vou entrar antes dele, então preciso receber o endereço
-                                        //que o inicio tem, pois esse será o endereço
-                                        //do meu proximo.
-            lista.ini = novoMorador; //em seguida, eu faço o inicio da lista receber meu endereço.
-        //resumindo, eu vou estar com endereço do que estáva no inicio e o inicio vai ter meu endereço.
-        
-        }
-        
-    }
+typedef struct ELEMENTO{
+        int data;
+        struct ELEMENTO *prox;
+}ELEMENTO;
+ 
+typedef struct ESTRUTURA{
+        ELEMENTO* head;
+}ESTRUTURA;
+ 
+ESTRUTURA *e;
+ 
+void insere(){
+        ELEMENTO* p = (ELEMENTO *) malloc(sizeof(ELEMENTO));
+        p->data = rand() % 100;
+        p->next = e->head;
+        e->head = p;
 }
-
-void inserirFim(int dado){
-    NO *novoMorador = (NO *)malloc(sizeof(NO));
-    if(novoMorador == NULL){
-        printf("Erro de alocacao");
-    }else{
-        novoMorador->dado = dado;
-        novoMorador->prox = NULL;
-
-        if(lista.ini = NULL){
-            lista.ini = novoMorador;
-            lista.fim = novoMorador;
+ 
+int remove(){
+        ELEMENTO* p = e->head;
+        int data;
+        if(p != NULL){
+                        e->head = p->next;
+                        p->next = NULL;
+                        data = p->data;
+                        return data;
         }else{
-            lista.fim->prox = novoMorador; //faço o meu fim.prox que 
-                            //possui o endereço do proximo elemento que seria NULL
-                            // apontar para o novo elemento.
-            lista.fim = novoMorador;
+                return -1;
         }
-        
-    }
-
 }
 void imprimir(){
-    NO *moradores = lista.ini;
-    printf("-> ");
-    while(moradores != NULL){
-        printf("%d ",moradores->dado );
-        moradores = moradores->prox;
+    ELEMENTO* ptr = e->head ;
+    printf("\ninicio ->");
+    while(ptr != NULL){
+        printf("%d ",ptr->data);
+        ptr = ptr->next;
     }
-    printf(" <-");
+    printf("<- Fim\n\n");
 }
+    void menu(){
+    printf("1 - Para inserir na pilha\n");
+    printf("2 - Para remover da pilha\n");
+    printf("3 - para imprimir \n");
+    printf("0 - para encerrar\n");
 
-void menu(){
-      
-    
-    printf("1 - inserir no inicio"
-           " \n2- inserir no final"
-            "\n3 - imprimir \n0 - sair\n");
-            
-   
-}
-
-
+    }
 int main(){
-   printf("teste");
-  
-     int op,dado;
-    lista.ini = NULL;
-    lista.fim = NULL;
-    do{ 
+        
+    int op,dado;
+    e->head = NULL;
+    
+    do{
+        system("cls");
         menu();
-        scanf("%d", &op);
+        scanf("%d",&op);
         fflush(stdin);
         system("cls");
         switch (op)
         {
         case 1:
-            printf("digite o valor: ");
-            scanf("%d ", &dado);
-            inserirInicio(dado);
-            getchar();
+            printf("\nDigite o dado para ser empilhado: ");
+            scanf("%d",&dado);
+            fflush(stdin);
+            insere(dado);
+            system("pause");
+            break;
+        case 2:
+        printf("\nremovendo da pilha: ");
+            dado = remove(); 
+            if(dado == -1){
+                printf("Erro\n");
+                system("pause");
+            }else{
+                printf("Removendo o elemento %d do inicio da lista.\n",dado);
+                system("pause");
+            }
             break;
         case 3:
+            printf("dados coletados");
             imprimir();
+            system("pause");
+            break;    
         default:
-               break;
-            }
+            break;
+        }
 
-    }while(op !=0);
-
-   
+    }while(op != 0); 
     
-    return 0;
+    
+
+
+        return 0;
 }
