@@ -1,85 +1,90 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-//Definindo a estrutura da fila
- typedef struct no{
- int dado;
- struct no *proximo;
-}no;
-//Definindo variáveis
-typedef no *ptr_no;
-ptr_no pilha;
-int op;
-//Prototipação
-void menu_mostrar();
-void menu_selecionar(int op);
-void pilha_inserir(ptr_no pilha);
-void pilha_remover(ptr_no pilha);
-void pilha_mostrar(ptr_no pilha);
-//Função Principal
+//define o nó
+typedef struct ELEMENTO {
+    int data;
+    struct ELEMENTO* prox;
+} ELEMENTO;
+ //estrutura da pilha, é um poneiro para o topo
+typedef struct ESTRUTURA {
+    ELEMENTO* head;
+} ESTRUTURA;
+ //ponteiro do tipo topo 
+ESTRUTURA* e;
+
+ //função empilha
+
+void insere() {
+    ELEMENTO* p = (ELEMENTO*)malloc(sizeof(ELEMENTO));  //cria um novo nó
+    p->data = rand() % 100; //preenche o nó com elemento aleatório, corrigido o %100 ###erro1###
+    p->prox = e->head; ////proximo do elemento inserido recebe o endereço do topo / segundo explicação está trocado 
+    e->head = p; // Update the head to point to the new element
+}
+
+int remove_element() {
+    ELEMENTO* p = e->head; //faço ponteiro apontar para o topo
+    int data; //crio uma variavel para obter o retorno do elemento removido
+    if (p != NULL) {  //se p for diferente de null indica que existe alguém na pilha para ser removido.
+        e->head = p->prox; //pilha no topo recebe o endereço do proximo elemento que será o topo.
+        data = p->data;
+        free(p); // Free the memory allocated for the removed element
+        return data;
+    }
+    return -1; /*Retorna um valor sentinela para indicar falha (por exemplo, quando a pilha está vazia)*/
+}
+
+void imprimir() {
+    ELEMENTO* ptr = e->head;
+    printf("\nInicio ->");
+    while (ptr != NULL) {
+        printf(" %d", ptr->data);
+        ptr = ptr->prox;
+    }
+    printf(" <- Fim\n\n");
+}
+
+void menu() {
+    printf("1 - Para inserir na pilha\n");
+    printf("2 - Para remover da pilha\n");
+    printf("3 - Para imprimir a pilha\n");
+    printf("0 - Para encerrar\n");
+}
+
 int main() {
- //Inicializando máquina de números randômicos
- srand(time(NULL));
- op = 1;
- //Criando o primeiro nó da pilha
- pilha = (ptr_no) malloc(sizeof(no));
- pilha->dado = 0;
- pilha->proximo = NULL;
- //Laço principal
- while (op !=0){
- system("cls");
- menu_mostrar();
- scanf("%d", &op);
- menu_selecionar(op);
- }
- system("Pause");
- return(0);
-}
-//Mostra o menu de opções
-void menu_mostrar(){
- pilha_mostrar(pilha);
- printf("\n\nEscolha uma das opcoes:\n");
- printf("1 - Inserir no final da pilha\n"); 
- printf("2 - Remover no final da pilha\n");
- printf("0 - Sair\n\n");
-}
-//Executa a opção escolhida no menu
-void menu_selecionar(int op){
- switch (op){
- case 1:
- pilha_inserir(pilha);
- break;
- case 2:
- pilha_remover(pilha);
- break;
- }
-}
-//Insere um elemento no final da Pilha
-void pilha_inserir(ptr_no pilha){
- while(pilha->proximo != NULL){
- pilha = pilha->proximo;
- }
- pilha->proximo = (ptr_no) malloc(sizeof(no));
- pilha = pilha->proximo;
- pilha->dado = rand()%100;
- pilha->proximo = NULL;
-}
-//Remove um elemento da pilha
-void pilha_remover(ptr_no pilha){
- ptr_no atual;
- atual = (ptr_no) malloc(sizeof(no));
- while(pilha->proximo != NULL){
- atual = pilha;
- pilha = pilha->proximo;
- }
- atual->proximo = NULL;
-}
-//Desenha o conteúdo da pilha na tela
-void pilha_mostrar(ptr_no pilha){
- system("cls");
- while(pilha->proximo != NULL) {
- printf("%d, ", pilha->dado);
- pilha = pilha->proximo;
- }
- printf("%d, ", pilha->dado);
+    e = (ESTRUTURA*)malloc(sizeof(ESTRUTURA)); // Aloca memória para a estrutura da pilha
+    e->head = NULL; // Initialize the head to NULL
+
+    int op, dado;
+    srand(time(NULL)); // gerar numeros aleatoriós tempo do relógio
+
+    menu(); // meu menu de opções
+
+    do {
+        scanf("%d", &op);
+        fflush(stdin);
+
+        switch (op) {
+            case 1:
+                insere();
+                break;
+            case 2:
+                dado = remove_element();
+                if (dado != -1)
+                    printf("Elemento removido: %d\n", dado);
+                else
+                    printf("A pilha está vazia!\n");
+                break;
+            case 3:
+                imprimir();
+                break;
+            case 0:
+                break;
+            default:
+                printf("Digite uma opção válida!\n");
+                break;
+        }
+    } while (op != 0);
+
+    return 0;
 }
