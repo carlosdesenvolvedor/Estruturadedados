@@ -1,0 +1,13 @@
+Fila de bamco;
+O elemento que entra primeiro sai primeiro;
+sempre que um elemento é adicionado na fila, ele vai pro final dela;
+sempre que removemos um elemnto, o primeiro é removido.
+FIFO First in / First Out
+enqueue() Adiciona 
+dequeue() remove o elemento da fila
+clear() limpa a fila;
+fila[10];[0][1]
+head -> cabeça da fila, indica quem é o primeiro elemento da fila.
+tail -> cauda, indica quanto s elemento tem na fila;
+Aplicação: Em qualquer situação onde temos que organizar o atendimento 
+de elementos;
