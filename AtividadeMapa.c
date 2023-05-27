@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
 
 //define o nó
@@ -26,7 +27,7 @@ void insere(){
                 
 }
  
-int remover_elemento(){
+int remove(){
     ELEMENTO* p = e->head; //faço ponteiro apontar para o topo
     int data;//crio uma variavel para obter o retorno do elemento removido
     if(p != NULL){ //se p for diferente de null indica que existe alguém na pilha para ser removido.
@@ -83,7 +84,7 @@ int main() {
                 menu();
                 break;
             case 2:
-                dado = remover_elemento();
+                dado = remover();
                 if (dado != -1){ 
                     printf("Elemento %d removido da pilha!!\n", dado);
                     printf("precione enter para remover item do topo!");

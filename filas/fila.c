@@ -36,13 +36,24 @@ void enqueue(){
     }
 }
 void maisUm(){
-    for(int i = 0; i<tail;i++){
+    if(tail>0 && head<TAMFILA){
+        for(int i = 0; i<tail;i++){
+            fila[i] = fila[i+1];
         
-         fila[i] = fila[i+1];
-                   
+            
+        }
+        
+        fila[TAMFILA] = 0;
+        
+        
+        tail--;
+        head--;
+        if(head = -1){
+            head = 0;
+        }
+        
     }
-    tail--;
-    head--;
+    
     
 }
 
