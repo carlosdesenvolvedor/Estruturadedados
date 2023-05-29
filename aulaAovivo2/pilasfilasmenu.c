@@ -4,7 +4,7 @@
 
 typedef struct NO{
     int dado;
-    NO* prox;
+    struct NO* prox;
 }NO;
 
 typedef struct PILHA{
@@ -18,6 +18,7 @@ typedef struct FILA{
 //declarei uma variavel do dipo fila e uma do tipo pilha
 FILA *f;
 PILHA *p;
+
 void menuPrimeiro();
 void menuPilha();
 void menuSegundo();
@@ -268,7 +269,5 @@ void menuPrimeiro(){
         }
         
         }while(op != 0);
-    
-	
 	
 }
