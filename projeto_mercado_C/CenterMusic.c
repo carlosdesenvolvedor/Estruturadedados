@@ -1,8 +1,52 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-//#include <unistd.h> //biblioteca para o linux
-#include <windows.h> //se estiver no Windows
+#include <stdio.h>
+#include <stdlib.h>
+
+#ifdef __unix__         
+    #include <unistd.h>
+    #include <stdlib.h>
+
+#elif defined(_WIN32) || defined(WIN32) 
+
+   #define OS_Windows
+
+   #include <windows.h>
+
+#endif
+//Windows X Linux -----------------
+void limpar(){
+    #ifdef OS_Windows
+    /* Codigo Windows */
+        system("cls");  
+    #else
+    /* Codigo GNU/Linux */
+        system("clear");
+       
+
+    #endif  
+}
+void limpeChar(){
+      #ifdef OS_Windows
+    /* Codigo Windows */
+        fflush(stdin);
+    #else
+    /* Codigo GNU/Linux */
+        getchar();
+    #endif 
+}
+void pausar(){
+          #ifdef OS_Windows
+    /* Codigo Windows */
+        system("pause");
+    #else
+    /* Codigo GNU/Linux */
+        printf("Aperque qualquer botão para continuar...");
+        getchar();
+    #endif 
+}
+//fim ---------------------------------------------------
 
 typedef struct {
     int codigo;
@@ -57,8 +101,8 @@ void menu(){
     
     int opcao;
     scanf("%d", &opcao);
-    //getchar(); //linux
-    //fflush(stdin); //windows
+    limpeChar();
+    
 
     switch (opcao)
     {
@@ -84,9 +128,8 @@ void menu(){
     default:
         printf("opcao invalida!!");
         sleep(2); //Windows
-        //sleep(2); //linux
-        system("cls"); //Windows
-        //system("clear"); linux
+        
+        limpar();
         menu();
         break;
     }
@@ -96,17 +139,19 @@ void cadastrarProduto(){
     printf("cadastro de produto\n");
     printf("----------------------\n");
     printf("informe o nome do produto: \n");
-    fflush(stdin);
+    
     fgets(produto[contador_produto].nome,30,stdin);
+    
     
     printf("Informe o preco do produto:\n");
     scanf("%f",&produto[contador_produto].preco);
-    fflush(stdin);
+ 
     printf("O produto [%s] foi cadastrado com sucesso",strtok(produto[contador_produto].nome, "\n"));
     produto[contador_produto].codigo = (contador_produto + 1);
     contador_produto++;
     sleep(2);
-    system("cls");
+    pausar();
+    limpar();
     menu();
 }
 void listarProdutos(){
@@ -121,16 +166,17 @@ void listarProdutos(){
            
         }
         sleep(2);
+        pausar();
         menu();
 
     }else{
         printf("Nao exite produtos cadastrado!!\n");
         sleep(4);
-        system("cls");
+        limpar();
         menu();
     }
     system("pause");
-        system("cls");
+        limpar();
         menu();
 
 }
@@ -148,7 +194,7 @@ void comprarProduto(){
         printf("informe o codigo do produto para adicionar no carrinho: \n");
         int codigo; // se tiver o produto solicito que o usuario digite o codigo do produto
         scanf("%d",&codigo);
-        fflush(stdin);
+        limpeChar();
         
         int tem_mercado = 0; //verifica se o codigo recebido é de um produto cadastrado
         for(int i=0;i<contador_produto;i++){ //varre se no arrei de produto para localizar o código
@@ -164,6 +210,7 @@ void comprarProduto(){
                     printf("Aumenteir a quantidade do porduto %s ja existente no carrinho\n",
                    strtok(carrinho[retorno[1]].produto.nome, "\n"));
                    sleep(2);
+                   pausar();
                    menu();
                 }else{ //caso o produto não exista no carrinho
                     Produto p = pegarProdutoPorCodigo(codigo);
@@ -172,6 +219,7 @@ void comprarProduto(){
                     contador_carrinho++;
                     printf("O produto %s foi add ao carrinho!\n",strtok(p.nome,"\n"));
                     sleep(2);
+                    pausar();
                     menu();
                 }
             }else{ //caso o carrinho esteja vazio é adicionado o primeiro item
@@ -181,6 +229,7 @@ void comprarProduto(){
                 contador_carrinho++;
                 printf("O produto %s foi add ao carrinho!\n",strtok(p.nome,"\n"));
                 sleep(2);
+                pausar();
                 menu();
                  }
 
@@ -191,6 +240,7 @@ void comprarProduto(){
             
             printf("Nao foi encontrado o produto com codigo informado %d!!\n",codigo);
             sleep(2);
+            pausar();
             menu();
         }
             else{
@@ -200,8 +250,9 @@ void comprarProduto(){
 
     }else{
         printf("Loja fechada!!Sem produtos para vender!!");
-        sleep(4);
-        system("cls");
+        sleep(2);
+        pausar();
+        limpar();
         menu();
     }
 
@@ -218,15 +269,17 @@ void visualizarCarrinho(){
             infoProduto(carrinho[i].produto);
             printf("Quantidade: %d\n",carrinho[i].quantidade);
             printf("---------------------------\n");
-            sleep(3);
-            system("cls");
+            sleep(2);
+            pausar();
+            limpar();
             menu();
             }
 
     }else{
         printf("ERRO! sem produtos no carrinho\n");
-        sleep(3);
-        system("cls");
+        sleep(2);
+        pausar();
+        limpar();
         menu();
     }
 
@@ -270,11 +323,13 @@ void fecharPedido(){
         contador_carrinho = 0;
         printf("Obrigado pela preferencia\n");
         sleep(1);
+        pausar();
     }else{
         printf("Voce nao tem nenhum produto no carrinho!!\n");
         sleep(3);//Windows
         //sleep(2);//linux
-        system("cls");
+        
+        limpar();
         menu();
 
         
