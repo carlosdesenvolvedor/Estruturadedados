@@ -27,7 +27,7 @@ void insere(){
                 
 }
  
-int remove(){
+int remover(){
     ELEMENTO* p = e->head; //faço ponteiro apontar para o topo
     int data;//crio uma variavel para obter o retorno do elemento removido
     if(p != NULL){ //se p for diferente de null indica que existe alguém na pilha para ser removido.

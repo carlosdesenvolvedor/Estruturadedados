@@ -206,6 +206,10 @@ void comprarProduto(){
     }
 
 }
+
+
+
+
 void visualizarCarrinho(){
     if(contador_carrinho>0){
         printf("Produtos no Carrinho\n");
