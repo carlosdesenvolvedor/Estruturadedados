@@ -92,9 +92,9 @@ void menu(){
     printf("===============================================\n\n");
 
     printf("Selecione uma opcao abaixo: \n");
-    printf("1 - Cadastrar Produto\n");
-    printf("2 - Listar Produto\n");
-    printf("3 - Comprar Produto\n");
+    printf("1 - Cadastrar servicos\n");
+    printf("2 - Listar servicos\n");
+    printf("3 - solicitar servicos\n");
     printf("4 - Visualizar Carrinho\n");
     printf("5 - Fechar pedido\n");
     printf("6 - Sair do sistema\n");
