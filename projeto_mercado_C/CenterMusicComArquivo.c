@@ -146,19 +146,35 @@ void menu(){
 
 }
 void cadastrarProduto(){
-    printf("cadastro de produto\n");
-    printf("----------------------\n");
-    printf("informe o nome do produto: \n");
     
-    fgets(produto[contador_produto].nome,30,stdin);
+    FILE *arq;
+    char servico[30];
+    char url[] = "banco_de_dados.txt";
+    float preco;
     
+    arq = fopen(url,"a");
+    if(arq){
+        //consegui criar o arquivo..
+                
+                
+                printf("informe o nome do servico:\n");
+                fgets(servico,30,stdin);
+                fputs(servico,arq);
+                
+                // printf("informe o nome e valor valor do servico:");
+                
+                // fscanf(arq,"%f*[^\n]",&preco);
+                
+                
+
+                
+                
+    }
+    else{
+        printf("Nao foi criar o arquivo");
+    }
+    fclose(arq);
     
-    printf("Informe o preco do produto:\n");
-    scanf("%f",&produto[contador_produto].preco);
- 
-    printf("O produto [%s] foi cadastrado com sucesso",strtok(produto[contador_produto].nome, "\n"));
-    produto[contador_produto].codigo = (contador_produto + 1);
-    contador_produto++;
     sleep(2);
     pausar();
     limpar();
