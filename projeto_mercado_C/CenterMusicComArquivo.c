@@ -151,57 +151,52 @@ void cadastrarProduto(){
     char servico[30];
     char url[] = "banco_de_dados.txt";
     float preco;
+    int opcao;
     
     arq = fopen(url,"a");
     if(arq){
-        //consegui criar o arquivo..
-                
-                
-                printf("informe o nome do servico:\n");
-                fgets(servico,30,stdin);
-                fputs(servico,arq);
-                
-                // printf("informe o nome e valor valor do servico:");
-                
-                // fscanf(arq,"%f*[^\n]",&preco);
-                
-                
-
-                
+        do{
+            printf("Digite servico, valor\n");
+            scanf("%30[^\n]",servico);
+            
+            scanf("\n%f",&preco);
+            fprintf(arq,"%s %.2f\n",servico,preco);
+            printf("Digite 1 para inserir outro serviço ");
+            scanf("%d", &opcao);
+            limpeChar();
+            
+        }while(opcao == 1);        
+        fclose(arq);
                 
     }
     else{
         printf("Nao foi criar o arquivo");
-    }
-    fclose(arq);
-    
+    } 
     sleep(2);
     pausar();
     limpar();
     menu();
 }
 void listarProdutos(){
-    if(contador_produto > 0){
-        printf("Listagem de produtos\n");
-        printf("---------------------\n");
-        for(int i = 0; i< contador_produto; i++){
-            infoProduto(produto[i]);
-            printf("---------------------\n");
-            sleep(1); //Windows
-            //sleep(1);//linux
-           
-        }
-        sleep(2);
-        pausar();
-        menu();
 
-    }else{
+    FILE *arq = fopen("banco_de_dados.txt", "r");
+    char servico[30];
+    float preco;
+    if(arq){
+        printf("======= produtos disponíveis =======");
+        while(fscanf(arq, "%30[^\n] %f",servico,&preco) != -1)
+        
+   
+            printf("\nServiço: %s\nPreço: %.2f\n",servico,preco );
+        fclose(arq);                               
+    }   
+    else{
         printf("Nao exite serviço cadastrado!!\n");
         sleep(4);
         limpar();
         menu();
     }
-    system("pause");
+        pausar();
         limpar();
         menu();
 
