@@ -184,7 +184,7 @@ void listarProdutos(){
     float preco;
     if(arq){
         printf("======= produtos disponíveis =======");
-        while(fscanf(arq, "%30[^\n] %f",servico,&preco) != -1)
+        while(fscanf(arq, "%s %f",servico,&preco) != -1)
         
    
             printf("\nServiço: %s\nPreço: %.2f\n",servico,preco );

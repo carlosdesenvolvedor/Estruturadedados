@@ -8,7 +8,7 @@
 
 typedef struct ELEMENTO{
         int data;
-        struct ELEMENTO *prox;
+        struct ELEMENTO *next;
 }ELEMENTO;
  //estrutura da pilha, é um poneiro para o topo
 typedef struct ESTRUTURA{
@@ -22,7 +22,7 @@ ESTRUTURA *e;
 void insere(){
     ELEMENTO* p = (ELEMENTO *) malloc(sizeof(ELEMENTO)); //cria um novo nó
     p->data = rand()%100; //preenche o nó com elemento aleatório, corrigido o %100
-    p->prox = e->head;   //e->head = p; //proximo do elemento inserido recebe o endereço do topo / segundo explicação está trocado 
+    p->next = e->head;   //e->head = p; //proximo do elemento inserido recebe o endereço do topo / segundo explicação está trocado 
     e->head = p; //p.prox = e.head; //atualizar o topo, agora ele passa a apontar para o novo elemento
                 
 }
@@ -31,8 +31,8 @@ int remover(){
     ELEMENTO* p = e->head; //faço ponteiro apontar para o topo
     int data;//crio uma variavel para obter o retorno do elemento removido
     if(p != NULL){ //se p for diferente de null indica que existe alguém na pilha para ser removido.
-       e->head = p->prox;  //e->head = p->next; //pilha no topo recebe o endereço do proximo elemento que será o topo.
-       p->prox = NULL;  //elemento que será excluido apontara para o vazio.
+       e->head = p->next;  //e->head = p->next; //pilha no topo recebe o endereço do proximo elemento que será o topo.
+       p->next = NULL;  //elemento que será excluido apontara para o vazio.
        data = p->data; //data que é uma variavel colal recebe o conteúdo do elemento excluido
        free(p);//free(ptr); //corrigido, falto esse free para desalocar a memório do elemento que foi desligado da pilha. 
        return data;  //recupera o valor do dado para a função que o envocar. 
@@ -47,7 +47,7 @@ void imprimir(){
     printf("\ninicio ->");
     while(ptr != NULL){
         printf(" %d ",ptr->data);
-        ptr = ptr->prox;
+        ptr = ptr->next;
     }
     printf("<- Fim\n\n");
 }   
@@ -65,7 +65,7 @@ int main() {
 
     int op, dado;
     srand(time(NULL)); // gerar numeros aleatoriós tempo do relógio
-    printf("Este é um programa C que implementa uma pilha básica usando uma lista encadeada individualmente. Aqui está um detalhamento de como funciona:");
+   
     printf("\n\n Aperte enter para comecar a usar sua pilha!!");
     getchar();
     menu(); // meu menu de opções

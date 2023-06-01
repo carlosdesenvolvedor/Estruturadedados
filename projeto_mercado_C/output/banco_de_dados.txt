@@ -1,2 +1,3 @@
-para hoje tentar implementar o código do serviço, incrementar 1 em 1, a cada produto 
-cadastrado para que no final, a lista seja feita com os códigos....
+limpeza 150,00
+regulagem  80,00
+outros 800,00

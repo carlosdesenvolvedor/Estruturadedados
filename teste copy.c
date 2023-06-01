@@ -1,10 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
+ 
 
-int main(){
-
-    int remove = 10;
-    printf("o valor de remove é : %d", remove);
-    return 0;
+ 
+float xf;
+float *ptr_xf;
+ 
+int main() {
+            int xi;
+            int *ptr_xi = xi;
+        
+           printf("endereco de xi %d",&xi);
+            printf("\nendereco da variavel que aponta ptr %",*ptr_xi);
+            
+            system("pause");
+            
+            return(0);
 }
-
