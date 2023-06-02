@@ -56,92 +56,76 @@ void pausar(){
 }
 //fim ---------------------------------------------------
 //=========fila=======================================
+
 #define TAMFILA 10 
+
 typedef struct cliente{
     char carro[30];
     int cod;
-}cliente;
-//Fila / Queue
-//char fila[TAMFILA] =  {0,0,0,0,0,0,0,0,0,0}; //inicializado a lista com valor 0
+} cliente;
 
+// Fila / Queue
 cliente fila[TAMFILA];
+int head = 0; // próximo a ser atendido
+int tail = 0;  // cauda guarda quantidade de elemento, último da fila
 
-int head = 0; //proximo a ser atendido
-int tail = 0;  //cauda guarda quantidade de elmento, último da fila
-
-void lista_elementos(){
+void lista_elementos() {
     printf("\n========  FILA ATUAL ==========\n");
-    for(int i=0; i<TAMFILA;i++){
-        printf("->");
-        printf("|%s|",fila[i].carro);
-        printf("<-");
-
+    for (int i = head; i < tail; i++) {
+        printf("%s\n", fila[i].carro);
     }
-    printf("\nhead: %d\n",head);
-    printf("\ntail: %d\n",tail);
+    printf("\nhead: %d\n", head);
+    printf("\ntail: %d\n", tail);
     printf("\n\n");
-
 }
 
-void enqueue(){
-    char val[30];
+void enqueue() {
     limpeChar();
-    if(tail < TAMFILA){
+    if (tail < TAMFILA) {
         //adiciona
-        printf("informe o modelo do carro para adicionar na fila: ");
-        fgets(val,30,stdin);
-        strcpy(fila[tail].carro,val[30]);
+        printf("Informe o modelo do carro: ");
+        fgets(fila[tail].carro, 30, stdin);
         tail++;
         lista_elementos();
-    }else{
+    } else {
         //não adiciona
-        printf("O patio está cheio, estacione fora da loja!!!");
-
+        printf("A garagem está cheia, estacione fora da loja.\n\n");
     }
 }
-void maisUm(){
-    if(tail>0 && head<TAMFILA){
-        for(int i = 0; i<tail;i++){
-            //fila[i].car0 = fila[i+1].carro;
-        
-            
+
+void maisUm() {
+    if (tail > 0 && head < TAMFILA) {
+        for (int i = head; i < tail; i++) {
+            strcpy(fila[i].carro, fila[i + 1].carro);
         }
-        
-        //fila[TAMFILA].carro = 0;
-        
         
         tail--;
         head--;
-        if(head = -1){
+        if (head == -1) {
             head = 0;
         }
-        
-    }
-    
-    
-}
-
-//remover
-void dequeue(){
-    if(head < tail){
-        //fila[head] = " ";
-        head++;
-        
         lista_elementos();
-    }else{
-        printf("A loja está vazia!!");
+    } else {
+      printf("A loja está vazia!!\n\n");
     }
 }
-void clear(){
-    char val[30] = " ";
-    for(int i = 0;i < TAMFILA;i++){
-        
-       // strcpy(fila[i],val);
 
+// remover
+void dequeue() {
+    if (head < tail) {
+        head++;
+        lista_elementos();
+    } else {
+        printf("A loja está vazia!!\n\n");
+    }
+}
+
+void clear() {
+    for (int i = 0; i < TAMFILA; i++) {
+        strcpy(fila[i].carro, "");
     }
     head = 0;
     tail = 0;
-
 }
 //========== fim fila ============================
 typedef struct {
