@@ -11,7 +11,7 @@ typedef no *ptr_no;
 ptr_no pilha;
 int op;
 //Prototipação
-void menu_mostrar();
+void clientes_na_espera();
 void menu_selecionar(int op);
 void pilha_inserir(ptr_no pilha);
 void pilha_remover(ptr_no pilha);
@@ -28,7 +28,7 @@ int main() {
  //Laço principal
  while (op !=0){
  system("cls");
- menu_mostrar();
+ clientes_na_espera();
  scanf("%d", &op);
  menu_selecionar(op);
  }
@@ -36,7 +36,7 @@ int main() {
  return(0);
 }
 //Mostra o menu de opções
-void menu_mostrar(){
+void clientes_na_espera(){
  pilha_mostrar(pilha);
  printf("\n\nEscolha uma das opcoes:\n");
  printf("1 - Inserir no final da pilha\n"); 

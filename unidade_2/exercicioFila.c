@@ -40,7 +40,7 @@ int op;
 void enfileirar();
 void desenfileirar();
 void fila_mostrar();
-void menu_mostrar();
+void clientes_na_espera();
 //
 
 int main(){
@@ -54,7 +54,7 @@ int main(){
 		//system("cls"); //limpa tela windows
 		system("clear"); //limpa tela
 		fila_mostrar();
-		menu_mostrar();
+		clientes_na_espera();
 		scanf("%d",&op);
 		//fflush(stdin);
 		flush_in();
@@ -154,7 +154,7 @@ void fila_mostrar(){
 }
 //Mostrar o menu de opções:
 //Função menu_mostrar(), que desenha na tela as opções permitidas para o usuário.
-void menu_mostrar(){
+void clientes_na_espera(){
 	printf("\nEscolha uma opção: \n");
 	printf("1 - Entrar na fila\n2 - Atender\n0 - Sair\n\n");
 }

@@ -19,7 +19,7 @@ int op;
 void pilha_entrar();
 void pilha_sair();
 void pilha_mostrar();
-void menu_mostrar();
+void clientes_na_espera();
 //
 
 int main(){
@@ -30,7 +30,7 @@ int main(){
 	while (op != 0){
 		system("cls"); //limpa tela
 		pilha_mostrar();
-		menu_mostrar();
+		clientes_na_espera();
 		scanf("%d",&op);
 		switch (op)
 		{
@@ -88,7 +88,7 @@ void pilha_mostrar(){
 }
 //Mostrar o menu de opções:
 //Função menu_mostrar(), que desenha na tela as opções permitidas para o usuário.
-void menu_mostrar(){
+void clientes_na_espera(){
 	printf("\nEscolha uma opção: \n");
 	printf("1 - Empilhar\n2 - Desempilhar\n0 - Sair\n\n");
 }

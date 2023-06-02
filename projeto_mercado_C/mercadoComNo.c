@@ -55,6 +55,22 @@ void pausar(){
     #endif 
 }
 //fim ---------------------------------------------------
+typedef struct no {
+    char nome;
+    char carro;
+ struct no *proximo;
+}no;
+typedef no *cliente;
+
+cliente fila;
+
+void clientes_na_espera();
+void menu_selecionar(int op);
+void fila_inserir(cliente nome,cliente carro);
+void fila_remover(cliente fila);
+void fila_mostrar(cliente fila);
+
+
 
 typedef struct {
     int codigo;
@@ -84,7 +100,23 @@ static Carrinho carrinho[50]; //para adicionar os produtos no carrinho
 static Produto produto[50];
 
 int main(){
+    int op;
+    fila = (cliente) malloc(sizeof(no));
+    fila->nome = NULL;
+    fila->carro = NULL;
+    fila->proximo = NULL;
+    //Laço principal
+    while (op !=0){
+    limpeChar();
+    clientes_na_espera(fila);
    
+    menu_selecionar(op);
+ system("Pause");
+ }
+    
+    //
+
+    pausar();
     menu();
 
     return 0;
@@ -146,57 +178,46 @@ void menu(){
 
 }
 void cadastrarProduto(){
+    printf("cadastro de produto\n");
+    printf("----------------------\n");
+    printf("informe o nome do produto: \n");
     
-    FILE *arq;
-    char servico[30];
-    char url[] = "banco_de_dados.txt";
-    float preco;
-    int opcao;
+    fgets(produto[contador_produto].nome,30,stdin);
     
-    arq = fopen(url,"a");
-    if(arq){
-        do{
-            printf("Digite servico, valor\n");
-            scanf("%30[^\n]",servico);
-            
-            scanf("\n%f",&preco);
-            fprintf(arq,"%s %.2f\n",servico,preco);
-            printf("Digite 1 para inserir outro serviço ");
-            scanf("%d", &opcao);
-            limpeChar();
-            
-        }while(opcao == 1);        
-        fclose(arq);
-                
-    }
-    else{
-        printf("Nao foi criar o arquivo");
-    } 
+    
+    printf("Informe o preco do produto:\n");
+    scanf("%f",&produto[contador_produto].preco);
+ 
+    printf("O produto [%s] foi cadastrado com sucesso",strtok(produto[contador_produto].nome, "\n"));
+    produto[contador_produto].codigo = (contador_produto + 1);
+    contador_produto++;
     sleep(2);
     pausar();
     limpar();
     menu();
 }
 void listarProdutos(){
-    
-    FILE *arq = fopen("banco_de_dados.txt", "r");
-    char servico[30];
-    float preco;
-    if(arq){
-        printf("======= produtos disponíveis =======");
-        while(fscanf(arq, "%s %f",servico,&preco) != -1)
-        
-   
-            printf("\nServiço: %s\nPreço: %.2f\n",servico,preco );
-        fclose(arq);                               
-    }   
-    else{
+    if(contador_produto > 0){
+        printf("Listagem de produtos\n");
+        printf("---------------------\n");
+        for(int i = 0; i< contador_produto; i++){
+            infoProduto(produto[i]);
+            printf("---------------------\n");
+            sleep(1); //Windows
+            //sleep(1);//linux
+           
+        }
+        sleep(2);
+        pausar();
+        menu();
+
+    }else{
         printf("Nao exite serviço cadastrado!!\n");
         sleep(4);
         limpar();
         menu();
     }
-        pausar();
+    system("pause");
         limpar();
         menu();
 
@@ -356,4 +377,54 @@ void fecharPedido(){
         
     }
 
+}
+//Mostra o menu de opções
+void clientes_na_espera(){
+    limpeChar();
+    fila_mostrar(fila);
+    printf("\n\nEscolha uma das opcoes:\n");
+    printf("1 - chegou ciente\n");
+    printf("2 - atender ciente\n");
+    printf("0 - Sair\n\n");
+}
+//Executa a opção escolhida no menu
+void menu_selecionar(int op){
+ switch (op){
+ case 1:
+ fila_inserir(fila->carro,fila->nome);
+ break;
+ case 2:
+ fila_remover(fila);
+ break;
+ }
+}
+//Insere um elemento no final da fila
+void fila_inserir(cliente nome,cliente carro){
+ while(fila->proximo != NULL){
+ fila = fila->proximo;
+ }
+ fila->proximo = (cliente) malloc(sizeof(cliente));
+ fila = fila->proximo;
+ fila->nome = nome;
+ fila->carro = carro;
+ fila->proximo = NULL;
+}
+//Remove um elemento do início da fila
+void fila_remover(cliente fila){
+ cliente atual;
+ atual = (cliente) malloc(sizeof(cliente));
+ atual = fila;
+ if (fila->proximo != NULL){
+ fila = fila->proximo;
+ atual->proximo = fila->proximo;
+ }
+}
+//Desenha o conteúdo da fila na tela
+void fila_mostrar(cliente fila){
+ system("cls");
+ while(fila->proximo != NULL) {
+ printf("Nome: %s\nVeiculo: %s", fila->nome,fila->carro);
+ fila = fila->proximo;
+ }
+ printf("%s, ", fila->nome);
 }

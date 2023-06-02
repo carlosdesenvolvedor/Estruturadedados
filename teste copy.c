@@ -1,18 +1,28 @@
 #include <stdio.h>
 #include <stdlib.h>
  
+struct notas {
+            float bim1;
+            float bim2;
+            float bim3;
+            float bim4;
+};
 
  
-float xf;
-float *ptr_xf;
+struct notas alunos_notas[40];
+
  
 int main() {
-            int xi;
-            int *ptr_xi = xi;
-        
-           printf("endereco de xi %d",&xi);
-            printf("\nendereco da variavel que aponta ptr %",*ptr_xi);
             
+            alunos_notas[0].bim1 = 9.9;
+            alunos_notas[1].bim1 = 8.9;
+            alunos_notas[2].bim1 = 7.9;
+            alunos_notas[3].bim1 = 6.9;
+            
+            for(int i =0;i<4;i++){
+                printf("nota %d: %.2f\n",i,alunos_notas[i].bim1);
+            }
+
             system("pause");
             
             return(0);

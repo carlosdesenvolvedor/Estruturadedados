@@ -24,7 +24,7 @@ a nossa lista encadeada. Como ela ainda não existe, vamos criar o
 primeiro nó com o atributo dado valendo 0 
 e o ponteiro proximo apontando para null:*/
 //prototipo
-void menu_mostrar();
+void clientes_na_espera();
 void menu_selecinar(int op);
 void lista_mostrar(ptr_no lista);
 void lista_mostrar_2(ptr_no lista);
@@ -43,7 +43,7 @@ int main(){
     //Laço principal
     while(op != 0){
       
-        menu_mostrar();
+        clientes_na_espera();
         scanf("%d", &op);
         menu_selecinar(op);
         
@@ -103,7 +103,7 @@ void lista_remover(ptr_no lista){
     
 }
 //mostrar menu de opções:
-void menu_mostrar(){
+void clientes_na_espera(){
     printf("\n\nEscolha uma das opções: \n");
     printf("1 - Inserir no final da Lista \n");
     printf("2 - Remover um tem da Lista \n");

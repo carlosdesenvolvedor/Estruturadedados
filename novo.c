@@ -17,7 +17,7 @@ int op;
 void fila_entrar();
 void fila_sair();
 void fila_mostrar();
-void menu_mostrar();
+void clientes_na_espera();
 //Função principal
 int main(){
  setlocale(LC_ALL, "Portuguese");
@@ -27,7 +27,7 @@ int main(){
  while (op != 0) {
  system("cls");
  fila_mostrar();
- menu_mostrar();
+ clientes_na_espera();
  scanf("%d", &op);
  switch (op) {
  case 1:
@@ -77,7 +77,7 @@ void fila_mostrar() {
  printf("]\n\n");
 }
 //Mostrar o menu de opções
-void menu_mostrar() {
+void clientes_na_espera() {
  printf("\nEscolha uma opção:\n");
  printf("1 - Incluir na Fila\n");
  printf("2 - Excluir da Fila\n");
