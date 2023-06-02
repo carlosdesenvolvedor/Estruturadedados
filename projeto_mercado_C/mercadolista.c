@@ -55,23 +55,95 @@ void pausar(){
     #endif 
 }
 //fim ---------------------------------------------------
-typedef struct no {
-    char nome;
-    char carro;
- struct no *proximo;
-}no;
-typedef no *cliente;
+//=========fila=======================================
+#define TAMFILA 10 
+typedef struct cliente{
+    char carro[30];
+    int cod;
+}cliente;
+//Fila / Queue
+//char fila[TAMFILA] =  {0,0,0,0,0,0,0,0,0,0}; //inicializado a lista com valor 0
 
-cliente fila;
+cliente fila[TAMFILA];
 
-void clientes_na_espera();
-void menu_selecionar(int op);
-void fila_inserir(cliente fila);
-void fila_remover(cliente fila);
-void fila_mostrar(cliente fila);
+int head = 0; //proximo a ser atendido
+int tail = 0;  //cauda guarda quantidade de elmento, último da fila
 
+void lista_elementos(){
+    printf("\n========  FILA ATUAL ==========\n");
+    for(int i=0; i<TAMFILA;i++){
+        printf("->");
+        printf("|%s|",fila[i].carro);
+        printf("<-");
 
+    }
+    printf("\nhead: %d\n",head);
+    printf("\ntail: %d\n",tail);
+    printf("\n\n");
 
+}
+
+void enqueue(){
+    char val[30];
+    limpeChar();
+    if(tail < TAMFILA){
+        //adiciona
+        printf("informe o modelo do carro para adicionar na fila: ");
+        fgets(val,30,stdin);
+        strcpy(fila[tail].carro,val[30]);
+        tail++;
+        lista_elementos();
+    }else{
+        //não adiciona
+        printf("O patio está cheio, estacione fora da loja!!!");
+
+    }
+}
+void maisUm(){
+    if(tail>0 && head<TAMFILA){
+        for(int i = 0; i<tail;i++){
+            //fila[i].car0 = fila[i+1].carro;
+        
+            
+        }
+        
+        //fila[TAMFILA].carro = 0;
+        
+        
+        tail--;
+        head--;
+        if(head = -1){
+            head = 0;
+        }
+        
+    }
+    
+    
+}
+
+//remover
+void dequeue(){
+    if(head < tail){
+        //fila[head] = " ";
+        head++;
+        
+        lista_elementos();
+    }else{
+        printf("A loja está vazia!!");
+    }
+}
+void clear(){
+    char val[30] = " ";
+    for(int i = 0;i < TAMFILA;i++){
+        
+       // strcpy(fila[i],val);
+
+    }
+    head = 0;
+    tail = 0;
+
+}
+//========== fim fila ============================
 typedef struct {
     int codigo;
     char nome[30];
@@ -93,6 +165,7 @@ void visualizarCarrinho();
 Produto pegarProdutoPorCodigo(int codigo);
 int * temNoCarrinho(int codigo);
 void fecharPedido();
+void menu_fila();
 
 static int contador_produto = 0; //para saber quantos protutos temos cadastrado
 static int contador_carrinho = 0; //para saber quantos produtos tem no carrinho
@@ -102,16 +175,7 @@ static Produto produto[50];
 int main(){
    
     
-    //Laço principal
-   
-    
-    clientes_na_espera();
-
-    system("Pause");
- 
-
-
-    pausar();
+    menu_fila();
     menu();
 
     return 0;
@@ -373,73 +437,39 @@ void fecharPedido(){
     }
 
 }
-//Mostra o menu de opções
-void clientes_na_espera(){
-    int op;
-    //fila_mostrar(fila);
-    do{ 
-    printf("\n\nEscolha uma das opcoes:\n");
-    printf("1 - chegou ciente\n");
-    printf("2 - atender ciente\n");
-    printf("0 - Sair\n\n");
-
-    scanf("%d",&op);
-        switch (op){
+void menu_fila(){
+    int op = 0;
+    while(op != -1){
+        printf("selecione a opcao: \n");
+        printf("1 - adicionar veiculo na fila\n");
+        printf("2 - atender cliente\n");
+        printf("3 - lista de clietes\n");
+        printf("4 - mandar todos os clientes embora\n");
+        printf("-1 - para sair\n");
+        scanf("%d",&op);
+        switch(op){
             case 1:
-                fila_inserir(fila);
+                enqueue();
                 break;
             case 2:
-                printf("oiiiiii");
-                fila_remover(fila);
+                dequeue();
+                maisUm();
+                lista_elementos();
+
+                break;
+            case 3:
+                lista_elementos();
+                break;
+            case 4:
+                clear();
                 break;
             default:
-                printf("entrada invalida");
+                printf("opcao invalida!!");
                 break;
+
+
         }
-    }while(op =! 0);
-}
-//Executa a opção escolhida no menu
-void menu_selecionar(int op){
- switch (op){
- case 1:
- fila_inserir(fila);
- break;
- case 2:
- fila_remover(fila);
- break;
- }
-}
-//Insere um elemento no final da fila
-void fila_inserir(cliente fila){
-    fila = (cliente) malloc(sizeof(no));
-    fila->nome = NULL;
-    fila->carro = NULL;
-    fila->proximo = NULL;
-    while(fila->proximo != NULL){
-    fila = fila->proximo;
     }
-    fila->proximo = (cliente) malloc(sizeof(cliente));
-    fila = fila->proximo;
-    fila->nome = fila;
-    fila->carro = fila;
-    fila->proximo = NULL;
-}
-//Remove um elemento do início da fila
-void fila_remover(cliente fila){
- cliente atual;
- atual = (cliente) malloc(sizeof(cliente));
- atual = fila;
- if (fila->proximo != NULL){
- fila = fila->proximo;
- atual->proximo = fila->proximo;
- }
-}
-//Desenha o conteúdo da fila na tela
-void fila_mostrar(cliente fila){
- system("cls");
- while(fila->proximo != NULL) {
- printf("Nome: %s\nVeiculo: %s", fila->nome,fila->carro);
- fila = fila->proximo;
- }
- printf("%s, ", fila->nome);
+
+ 
 }
