@@ -2,358 +2,183 @@
 #include <string.h>
 #include <stdlib.h>
 
-#ifdef __unix__         
-    #include <unistd.h>
-    #include <stdlib.h>
-
-#elif defined(_WIN32) || defined(WIN32) 
-
-   #define OS_Windows
-   #include <locale.h>
-   #include <windows.h>
-
-#endif
-//Windows X Linux -----------------
-void portuguesBrasil(){
-    
-    #ifdef OS_Windows
-    /* Codigo Windows */
-        setlocale(LC_ALL,"Portuguese");
-    #else
-    /* Codigo GNU/Linux */     
-
-    #endif  
-}
-void limpar(){
-    #ifdef OS_Windows
-    /* Codigo Windows */
-        system("cls");  
-    #else
-    /* Codigo GNU/Linux */
-        system("clear");
-       
-
-    #endif  
-}
-void limpeChar(){
-      #ifdef OS_Windows
-    /* Codigo Windows */
-        fflush(stdin);
-    #else
-    /* Codigo GNU/Linux */
-        getchar();
-    #endif 
-}
-void pausar(){
-          #ifdef OS_Windows
-    /* Codigo Windows */
-        system("pause");
-    #else
-    /* Codigo GNU/Linux */
-        printf("Aperque qualquer botão para continuar...");
-        getchar();
-    #endif 
-}
-//fim ---------------------------------------------------
-
 typedef struct {
     int codigo;
     char nome[30];
     float preco;
-}Produto;
+} Produto;
 
-//itens do carrinho
-typedef struct{
-    Produto produto;
-    int quantidade;
-}Carrinho;
+Produto produto[100]; //array de produtos
 
-void infoProduto(Produto prod);
+//protótipos das funções
+void salvar_produtos();
+void carregar_produtos();
 void menu();
 void cadastrarProduto();
 void listarProdutos();
 void comprarProduto();
 void visualizarCarrinho();
-Produto pegarProdutoPorCodigo(int codigo);
-int * temNoCarrinho(int codigo);
 void fecharPedido();
+void menu_fila();
 
 static int contador_produto = 0; //para saber quantos protutos temos cadastrado
 static int contador_carrinho = 0; //para saber quantos produtos tem no carrinho
-static Carrinho carrinho[50]; //para adicionar os produtos no carrinho
-static Produto produto[50];
 
 int main(){
-   
+    carregar_produtos();
     menu();
-
+    salvar_produtos();
     return 0;
 }
 
-void infoProduto(Produto prod){
-    printf("Codigo: %d \nNome: %s\nPreco:%.2f\n",prod.codigo,strtok(prod.nome,"\n"),prod.preco);
+//Funções relacionadas a produtos
 
-}
-void menu(){
-    portuguesBrasil();
-    printf("============================================\n");
-    printf("============= Bem-vindo(a) ==================\n");  
-    printf("============== Lava Jato ====================\n");
-    printf("===============================================\n\n");
-
-    printf("Selecione uma opcao abaixo: \n");
-    printf("1 - Cadastrar servicos\n");
-    printf("2 - Listar servicos\n");
-    printf("3 - solicitar servicos\n");
-    printf("4 - Visualizar Carrinho\n");
-    printf("5 - Fechar pedido\n");
-    printf("6 - Sair do sistema\n");
-    
-    int opcao;
-    scanf("%d", &opcao);
-    limpeChar();
-    
-
-    switch (opcao)
-    {
-    case 1:
-        cadastrarProduto();
-        break;
-    case 2:
-        listarProdutos();
-        break;
-    case 3:
-        comprarProduto();
-        break;
-    case 4:
-        visualizarCarrinho();
-    case 5:
-        fecharPedido();
-        break;
-    case 6:
-        printf("Volte Sempre!!");
-        sleep(2); //para Windows
-        //sleep(2); para linux
-        exit(0);
-    default:
-        printf("opcao invalida!!");
-        sleep(2); //Windows
-        
-        limpar();
-        menu();
-        break;
+void salvar_produtos() {
+    FILE *arquivo = fopen("produtos.txt", "w");
+    if(arquivo == NULL){
+        printf("Erro ao abrir o arquivo!");
+        return;
     }
-
+    for (int i = 0; i < contador_produto; i++) {
+        fprintf(arquivo, "%d\n", produto[i].codigo);
+        fprintf(arquivo, "%s\n", produto[i].nome);
+        fprintf(arquivo, "%.2f\n", produto[i].preco);
+    }
+    fclose(arquivo);
 }
+
+void carregar_produtos() {
+    FILE *arquivo = fopen("produtos.txt", "r");
+    if (arquivo == NULL) {
+        return; // caso o arquivo não exista, retorna
+    }
+    contador_produto = 0; // zera o contador para popular o array do início
+    int codigo;
+    char nome[30];
+    float preco;
+    while (fscanf(arquivo, "%d\n", &codigo) != EOF) {
+        fgets(nome, 30, arquivo);
+        fscanf(arquivo, "%f\n", &preco);
+        produto[contador_produto].codigo = codigo;
+        strcpy(produto[contador_produto].nome, nome);
+        produto[contador_produto].preco = preco;
+        contador_produto++;
+    }
+    fclose(arquivo);
+}
+
 void cadastrarProduto(){
-    
-    FILE *arq;
-    char servico[30];
-    char url[] = "banco_de_dados.txt";
-    float preco;
-    int opcao;
-    
-    arq = fopen(url,"a");
-    if(arq){
-        do{
-            printf("Digite servico, valor\n");
-            scanf("%30[^\n]",servico);
-            
-            scanf("\n%f",&preco);
-            fprintf(arq,"%s %.2f\n",servico,preco);
-            printf("Digite 1 para inserir outro serviço ");
-            scanf("%d", &opcao);
-            limpeChar();
-            
-        }while(opcao == 1);        
-        fclose(arq);
-                
+    printf("==== Cadastro de Produto ====\n");
+    if(contador_produto >= 100){
+        printf("Limite de produtos atingido.\n");
+        return;
     }
-    else{
-        printf("Nao foi criar o arquivo");
-    } 
-    sleep(2);
-    pausar();
-    limpar();
-    menu();
+    Produto novo_produto;
+    printf("Código: ");
+    scanf("%d", &novo_produto.codigo);
+    for(int i=0; i<contador_produto; i++){
+        if(novo_produto.codigo == produto[i].codigo){
+            printf("Já existe um produto com esse código.\n");
+            return;
+        }
+    }
+    printf("Nome: ");
+    scanf("%s", novo_produto.nome);
+    printf("Preço: ");
+    scanf("%f", &novo_produto.preco);
+    produto[contador_produto] = novo_produto;
+    contador_produto++;
+    printf("Produto cadastrado com sucesso!\n");
 }
+
 void listarProdutos(){
-    
-    FILE *arq = fopen("banco_de_dados.txt", "r");
-    char servico[30];
-    float preco;
-    if(arq){
-        printf("======= produtos disponíveis =======");
-        while(fscanf(arq, "%s %f",servico,&preco) != -1)
-        
-   
-            printf("\nServiço: %s\nPreço: %.2f\n",servico,preco );
-        fclose(arq);                               
-    }   
-    else{
-        printf("Nao exite serviço cadastrado!!\n");
-        sleep(4);
-        limpar();
-        menu();
+    printf("==== Produtos Cadastrados ====\n");
+    for(int i=0; i<contador_produto; i++){
+        printf("-----------------------------\n");
+        printf("Código: %d\n", produto[i].codigo);
+        printf("Nome: %s\n", produto[i].nome);
+        printf("Preço: %.2f\n", produto[i].preco);
     }
-        pausar();
-        limpar();
-        menu();
-
 }
+
 void comprarProduto(){
-    if(contador_produto>0){ //verifica se existe produto cadastrado
-        printf("Comprando produto\n"); //
-       
-        printf("---------------------------------------------\n");
-        printf("========= Pordutos disponiveis ============= \n");
-        for(int i = 0; i<contador_produto;i++){
-            infoProduto(produto[i]);
-            printf("-------------------\n");
-
+    printf("Informe o código do produto: ");
+    int codigo;
+    scanf("%d", &codigo);
+    int indice_produto = -1;
+    for(int i=0; i<contador_produto; i++){
+        if(codigo == produto[i].codigo){
+            indice_produto = i;
+            break;
         }
-        printf("informe o código do produto para adicionar no carrinho: \n");
-        int codigo; // se tiver o produto solicito que o usuario digite o codigo do produto
-        scanf("%d",&codigo);
-        limpeChar();
-        
-        int tem_mercado = 0; //verifica se o codigo recebido é de um produto cadastrado
-        for(int i=0;i<contador_produto;i++){ //varre se no arrei de produto para localizar o código
-            if(produto[i].codigo == codigo){
-                tem_mercado = 1;
-
-            if(contador_carrinho > 0){ //esse produto que foi encontrado já tem no carrinho
-                int * retorno = temNoCarrinho(codigo);
-
-                if(retorno[0] == 1){ //produto já tem no carrinho
-                    //tem esse porduto com esse código no carrinho
-                    carrinho[retorno[1]].quantidade++; //incrementa a quantidade
-                    printf("Aumenteir a quantidade do porduto %s ja existente no carrinho\n",
-                   strtok(carrinho[retorno[1]].produto.nome, "\n"));
-                   sleep(2);
-                   pausar();
-                   menu();
-                }else{ //caso o produto não exista no carrinho
-                    Produto p = pegarProdutoPorCodigo(codigo);
-                    carrinho[contador_carrinho].produto = p; //adicionando o nosso produto no carrinho
-                    carrinho[contador_carrinho].quantidade = 1;
-                    contador_carrinho++;
-                    printf("O produto %s foi add ao carrinho!\n",strtok(p.nome,"\n"));
-                    sleep(2);
-                    pausar();
-                    menu();
-                }
-            }else{ //caso o carrinho esteja vazio é adicionado o primeiro item
-                Produto p = pegarProdutoPorCodigo(codigo);
-                carrinho[contador_carrinho].produto = p;
-                carrinho[contador_carrinho].quantidade = 1;
-                contador_carrinho++;
-                printf("O produto %s foi add ao carrinho!\n",strtok(p.nome,"\n"));
-                sleep(2);
-                pausar();
-                menu();
-                 }
-
-            }
-            
-        }
-        if(tem_mercado< 1){ //se o tem mercado for menor que 1 significa que não tem o produto cadastrado.
-            
-            printf("Nao foi encontrado o produto com codigo informado %d!!\n",codigo);
-            sleep(2);
-            pausar();
-            menu();
-        }
-            else{
-                sleep(2);
-                menu();
-            }
-
-    }else{
-        printf("Loja fechada!!Sem produtos para vender!!");
-        sleep(2);
-        pausar();
-        limpar();
-        menu();
     }
-
+    if(indice_produto == -1){
+        printf("Produto não encontrado.\n");
+        return;
+    }
+    produto[indice_produto].preco += produto[indice_produto].preco*0.10; //aumenta 10% do preço
+    printf("Produto adicionado ao carrinho!\n");
+    contador_carrinho++;
 }
-
-
-
 
 void visualizarCarrinho(){
-    if(contador_carrinho>0){
-        printf("Produtos no Carrinho\n");
-        printf("-----------------------\n");
-        for(int i= 0;i<contador_carrinho;i++){
-            infoProduto(carrinho[i].produto);
-            printf("Quantidade: %d\n",carrinho[i].quantidade);
-            printf("---------------------------\n");
-            sleep(2);
-            pausar();
-            limpar();
-            menu();
-            }
-
-    }else{
-        printf("ERRO! sem produtos no carrinho\n");
-        sleep(2);
-        pausar();
-        limpar();
-        menu();
-    }
-
+    printf("==== Carrinho de Compras ====\n");
+    printf("Quantidade de produtos: %d\n", contador_carrinho);
 }
-Produto pegarProdutoPorCodigo(int codigo){
-    Produto p;
-    for(int i = 0; i< contador_produto;i++){
-        if(produto[i].codigo == codigo){
-            p = produto[i];
-        }
-    }
-    return p;
-}
-int * temNoCarrinho(int codigo){
-    int static retorno[] = {0,0};
-    for(int i = 0;i<contador_carrinho;i++){
-        if(carrinho[i].produto.codigo == codigo){
-            retorno[0] = 1 ;//tem oproduto com este coódio no ocarrinho
-            retorno[1] = i; //o indice do produto no carrinho
-        }
 
-    }
-    return retorno;
-}
+//Funções relacionadas ao fechamento do pedido
+
 void fecharPedido(){
-    if(contador_carrinho>0){
-        float valorTotal = 0.0;
-        printf("produtos do carrinho: \n");
-        printf("----------------------\n");
-        for(int i =0; i<contador_carrinho;i++){
-            Produto p = carrinho[i].produto;
-            int quantidade = carrinho[i].quantidade;
-            valorTotal += p.preco * quantidade;
-            infoProduto(p);
-            printf("Quantidade: %d\n",quantidade);
-            printf("-----------------------------\n");
-            sleep(1);
-        }
-        printf("Sua fatura e R$ %.2f\n",valorTotal);
-        //limpar carrinho
-        contador_carrinho = 0;
-        printf("Obrigado pela preferencia\n");
-        sleep(1);
-        pausar();
-    }else{
-        printf("Voce nao tem nenhum produto no carrinho!!\n");
-        sleep(3);//Windows
-        //sleep(2);//linux
-        
-        limpar();
-        menu();
-
-        
+    float total = 0;
+    for(int i=0; i<contador_produto; i++){
+        total += produto[i].preco;
     }
+    printf("Total a pagar: R$ %.2f\n", total);
+    contador_produto = 0;
+    contador_carrinho = 0;
+    printf("Pedido finalizado com sucesso!\n");
+}
 
+void menu_fila(){
+    int opcao;
+    do{
+        printf("==== MENU ====\n");
+        printf("1- Comprar produto\n");
+        printf("2- Visualizar carrinho\n");
+        printf("3- Fechar pedido\n");
+        printf("0- Sair\n");
+        printf("Opção: ");
+        scanf("%d", &opcao);
+        
+        switch(opcao){
+            case 1: comprarProduto(); break;
+            case 2: visualizarCarrinho(); break;
+            case 3: fecharPedido(); break;
+            case 0: break;
+            default: printf("Opção inválida.\n");
+        }
+    }while(opcao != 0);
+}
+
+//Função que exibe o menu principal
+
+void menu(){
+    int opcao;
+    do{
+        printf("==== MENU ====\n");
+        printf("1- Cadastrar produto\n");
+        printf("2- Listar produtos\n");
+        printf("3- Acessar fila\n");
+        printf("0- Sair\n");
+        printf("Opção: ");
+        scanf("%d", &opcao);
+
+        switch(opcao){
+            case 1: cadastrarProduto(); break;
+            case 2: listarProdutos(); break;
+            case 3: menu_fila(); break;
+            case 0: break;
+            default: printf("Opção inválida.\n");
+        }
+    }while(opcao != 0);
 }
