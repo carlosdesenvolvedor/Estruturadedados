@@ -4,90 +4,100 @@
 
 typedef struct {
     int codigo;
-    char nome[30];
+    char nome[100];
     float preco;
 } Produto;
 
-Produto produto[100]; //array de produtos
+typedef struct {
+    int codigo;
+    char nome[100];
+    float preco;
+    int quantidade;
+} Carrinho;
 
-//protótipos das funções
-void salvar_produtos();
-void carregar_produtos();
-void menu();
-void cadastrarProduto();
-void listarProdutos();
-void comprarProduto();
-void visualizarCarrinho();
-void fecharPedido();
-void menu_fila();
+Carrinho carrinho[100];
+static int contador_carrinho = 0;
 
-static int contador_produto = 0; //para saber quantos protutos temos cadastrado
-static int contador_carrinho = 0; //para saber quantos produtos tem no carrinho
+Produto produto[100];
+static int contador_produto = 0;
+static int ultimo_codigo = 0;
+
+void salvar_produtos(); // Declaração da função para salvar os produtos no arquivo.
+void carregar_produtos(); // Declaração da função para carregar os produtos do arquivo.
+void menu(); // Declaração da função para exibir o menu principal.
+void cadastrarProduto(); // Declaração da função para cadastrar um novo produto.
+void listarProdutos(); // Declaração da função para listar os produtos cadastrados.
+void comprarProduto(); // Declaração da função para adicionar um produto ao carrinho.
+void visualizarCarrinho(); // Declaração da função para exibir o carrinho de compras.
+void fecharPedido(); // Declaração da função para fechar o pedido e exibir o total a pagar.
+void menu_fila(); // Declaração da função para exibir o menu do carrinho de compras.
 
 int main(){
-    carregar_produtos();
-    menu();
-    salvar_produtos();
+    carregar_produtos(); // Carrega os produtos do arquivo.
+    menu(); // Exibe o menu principal.
+    salvar_produtos(); // Salva os produtos no arquivo.
     return 0;
 }
 
-//Funções relacionadas a produtos
-
 void salvar_produtos() {
-    FILE *arquivo = fopen("produtos.txt", "w");
-    if(arquivo == NULL){
-        printf("Erro ao abrir o arquivo!");
+    FILE *arquivo = fopen("produtos.txt", "w"); // Abre o arquivo "produtos.txt" para escrita.
+    if (arquivo == NULL) { // Verifica se houve erro ao abrir o arquivo.
+        printf("Erro ao abrir o arquivo!\n");
         return;
     }
     for (int i = 0; i < contador_produto; i++) {
-        fprintf(arquivo, "%d\n", produto[i].codigo);
-        fprintf(arquivo, "%s\n", produto[i].nome);
-        fprintf(arquivo, "%.2f\n", produto[i].preco);
+        fprintf(arquivo, "%d\n", produto[i].codigo); // Escreve o código do produto no arquivo.
+        fprintf(arquivo, "%s\n", produto[i].nome); // Escreve o nome do produto no arquivo.
+        fprintf(arquivo, "%.2f\n", produto[i].preco); // Escreve o preço do produto no arquivo.
     }
-    fclose(arquivo);
+    fclose(arquivo); // Fecha o arquivo.
 }
 
 void carregar_produtos() {
-    FILE *arquivo = fopen("produtos.txt", "r");
-    if (arquivo == NULL) {
-        return; // caso o arquivo não exista, retorna
+    FILE *arquivo = fopen("produtos.txt", "r"); // Abre o arquivo "produtos.txt" para leitura.
+    if (arquivo == NULL) { // Verifica se houve erro ao abrir o arquivo.
+        return;
     }
-    contador_produto = 0; // zera o contador para popular o array do início
+    contador_produto = 0;
     int codigo;
-    char nome[30];
+    char nome[100];
     float preco;
-    while (fscanf(arquivo, "%d\n", &codigo) != EOF) {
-        fgets(nome, 30, arquivo);
-        fscanf(arquivo, "%f\n", &preco);
-        produto[contador_produto].codigo = codigo;
-        strcpy(produto[contador_produto].nome, nome);
-        produto[contador_produto].preco = preco;
-        contador_produto++;
+    while (fscanf(arquivo, "%d\n", &codigo) != EOF) { // Lê o código do produto do arquivo até o final.
+        fgets(nome, 100, arquivo); // Lê o nome do produto do arquivo.
+        nome[strcspn(nome, "\n")] = '\0'; // Remove o caractere de nova linha do nome.
+        fscanf(arquivo, "%f\n", &preco); // Lê o preço do produto do arquivo.
+        produto[contador_produto].codigo = codigo; // Armazena o código do produto na estrutura de produtos.
+        strcpy(produto[contador_produto].nome, nome); // Copia o nome do produto para a estrutura de produtos.
+        produto[contador_produto].preco = preco; // Armazena o preço do produto na estrutura de produtos.
+        contador_produto++; // Incrementa o contador de produtos.
     }
-    fclose(arquivo);
+    fclose(arquivo); // Fecha o arquivo.
 }
 
-void cadastrarProduto(){
+void cadastrarProduto() {
     printf("==== Cadastro de Produto ====\n");
-    if(contador_produto >= 100){
+    if (contador_produto >= 100) {
         printf("Limite de produtos atingido.\n");
         return;
     }
     Produto novo_produto;
-    printf("Código: ");
-    scanf("%d", &novo_produto.codigo);
-    for(int i=0; i<contador_produto; i++){
-        if(novo_produto.codigo == produto[i].codigo){
-            printf("Já existe um produto com esse código.\n");
+    novo_produto.codigo = ultimo_codigo + 1; // Gera o código do novo produto.
+    ultimo_codigo++;
+    for (int i = 0; i < contador_produto; i++) {
+        if (novo_produto.codigo == produto[i].codigo) { // Verifica se já existe um produto com o mesmo código.
+            printf("Ja existe um produto com esse codigo.\n");
             return;
         }
     }
+
     printf("Nome: ");
-    scanf("%s", novo_produto.nome);
-    printf("Preço: ");
-    scanf("%f", &novo_produto.preco);
-    produto[contador_produto] = novo_produto;
-    contador_produto++;
+    getchar();
+    fgets(novo_produto.nome, 100, stdin); // Lê o nome do novo produto.
+    novo_produto.nome[strcspn(novo_produto.nome, "\n")] = '\0'; // Remove o caractere de nova linha do nome.
+    printf("Preco: ");
+    scanf("%f", &novo_produto.preco); // Lê o preço do novo produto.
+    produto[contador_produto] = novo_produto; // Armazena o novo produto na estrutura de produtos.
+    contador_produto++; // Incrementa o contador de produtos.
     printf("Produto cadastrado com sucesso!\n");
 }
 
@@ -95,47 +105,74 @@ void listarProdutos(){
     printf("==== Produtos Cadastrados ====\n");
     for(int i=0; i<contador_produto; i++){
         printf("-----------------------------\n");
-        printf("Código: %d\n", produto[i].codigo);
-        printf("Nome: %s\n", produto[i].nome);
-        printf("Preço: %.2f\n", produto[i].preco);
+        printf("Codigo: %d\n", produto[i].codigo); // Exibe o código do produto.
+        printf("Nome: %s\n", produto[i].nome); // Exibe o nome do produto.
+        printf("Preco: %.2f\n", produto[i].preco); // Exibe o preço do produto.
     }
 }
 
 void comprarProduto(){
-    printf("Informe o código do produto: ");
+    printf("Informe o codigo do produto: ");
     int codigo;
-    scanf("%d", &codigo);
+    scanf("%d", &codigo); // Lê o código do produto a ser comprado.
     int indice_produto = -1;
-    for(int i=0; i<contador_produto; i++){
-        if(codigo == produto[i].codigo){
-            indice_produto = i;
+    int indice_carrinho = -1;
+
+    for(int i=0; i<contador_carrinho; i++){
+        if(codigo == carrinho[i].codigo){
+            indice_carrinho = i;
             break;
         }
     }
-    if(indice_produto == -1){
-        printf("Produto não encontrado.\n");
-        return;
+
+    if(indice_carrinho == -1) {
+        for(int i=0; i<contador_produto; i++){
+            if(codigo == produto[i].codigo){
+                indice_produto = i;
+                break;
+            }
+        }
+        if(indice_produto == -1){
+            printf("Produto nao encontrado.\n");
+            return;
+        }
+
+        Carrinho novo_produto_carrinho;
+        novo_produto_carrinho.codigo = produto[indice_produto].codigo; // Armazena o código do produto no carrinho.
+        strcpy(novo_produto_carrinho.nome, produto[indice_produto].nome); // Copia o nome do produto para o carrinho.
+        novo_produto_carrinho.preco = produto[indice_produto].preco; // Armazena o preço do produto no carrinho.
+
+        printf("Quantidade: ");
+        scanf("%d", &novo_produto_carrinho.quantidade); // Lê a quantidade do produto a ser comprada.
+
+        carrinho[contador_carrinho] = novo_produto_carrinho; // Adiciona o produto ao carrinho.
+        contador_carrinho++; // Incrementa o contador de produtos no carrinho.
+        printf("Produto [%s] adicionado ao carrinho!\n", produto->nome); // Exibe a confirmação de que o produto foi adicionado ao carrinho.
+    } else {
+        printf("Produto já está no carrinho. Preço atualizado!\n");
     }
-    produto[indice_produto].preco += produto[indice_produto].preco*0.10; //aumenta 10% do preço
-    printf("Produto adicionado ao carrinho!\n");
-    contador_carrinho++;
+
+    salvar_produtos(); // Salva os produtos no arquivo.
 }
 
 void visualizarCarrinho(){
     printf("==== Carrinho de Compras ====\n");
-    printf("Quantidade de produtos: %d\n", contador_carrinho);
+    printf("Quantidade de produtos: %d\n", contador_carrinho); // Exibe a quantidade de produtos no carrinho.
+    for(int i=0; i<contador_carrinho; i++){
+        printf("-----------------------------\n");
+        printf("Codigo: %d\n", carrinho[i].codigo); // Exibe o código do produto.
+        printf("Nome: %s\n", carrinho[i].nome); // Exibe o nome do produto.
+        printf("Preco: %.2f\n", carrinho[i].preco); // Exibe o preço do produto.
+        printf("Quantidade: %d\n", carrinho[i].quantidade); // Exibe a quantidade do produto.
+    }
 }
-
-//Funções relacionadas ao fechamento do pedido
 
 void fecharPedido(){
     float total = 0;
-    for(int i=0; i<contador_produto; i++){
-        total += produto[i].preco;
+    for(int i=0; i<contador_carrinho; i++){
+        total += carrinho[i].preco * carrinho[i].quantidade; // Calcula o total a pagar multiplicando o preço pela quantidade de produtos.
     }
-    printf("Total a pagar: R$ %.2f\n", total);
-    contador_produto = 0;
-    contador_carrinho = 0;
+    printf("Total a pagar: R$ %.2f\n", total); // Exibe o total a pagar.
     printf("Pedido finalizado com sucesso!\n");
 }
 
@@ -147,7 +184,7 @@ void menu_fila(){
         printf("2- Visualizar carrinho\n");
         printf("3- Fechar pedido\n");
         printf("0- Sair\n");
-        printf("Opção: ");
+        printf("Opcao: ");
         scanf("%d", &opcao);
         
         switch(opcao){
@@ -157,10 +194,8 @@ void menu_fila(){
             case 0: break;
             default: printf("Opção inválida.\n");
         }
-    }while(opcao != 0);
+    } while(opcao != 0);
 }
-
-//Função que exibe o menu principal
 
 void menu(){
     int opcao;
@@ -168,9 +203,9 @@ void menu(){
         printf("==== MENU ====\n");
         printf("1- Cadastrar produto\n");
         printf("2- Listar produtos\n");
-        printf("3- Acessar fila\n");
+        printf("3- Atender um cliente\n");
         printf("0- Sair\n");
-        printf("Opção: ");
+        printf("Opcao: ");
         scanf("%d", &opcao);
 
         switch(opcao){
@@ -180,5 +215,5 @@ void menu(){
             case 0: break;
             default: printf("Opção inválida.\n");
         }
-    }while(opcao != 0);
+    } while(opcao != 0);
 }
