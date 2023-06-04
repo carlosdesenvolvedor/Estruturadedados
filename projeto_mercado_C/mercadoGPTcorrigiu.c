@@ -46,6 +46,7 @@ void pausar() {
 #endif
 }
 
+
 #define TAMFILA 10
 
 // Definição da estrutura do cliente
@@ -60,55 +61,9 @@ int head = 0; // próximo a ser atendido
 int tail = 0; // cauda guarda quantidade de elemento, último da fila
 
 // Lista os elementos da fila
-void lista_elementos() {
-    printf("\n========  FILA ATUAL ==========\n");
-    for (int i = head; i < tail; i++) {
-        printf("%s ", fila[i].carro);
-    }
-    printf("\nhead: %d\n", head);
-    printf("\ntail: %d\n", tail);
-    printf("\n\n");
-}
 
-// Adiciona um cliente à fila
-void enqueue() {
-    limpeChar();
-    if (tail < TAMFILA) {
-        // Adiciona
-        printf("Informe o modelo do carro: ");
-        fgets(fila[tail].carro, 30, stdin);
-        tail++;
-        lista_elementos();
-    } else {
-        // Não adiciona
-        printf("A garagem está cheia, estacione fora da loja.\n\n");
-    }
-    limpar();
-    menu_compra();
-}
-void dequeue() {
-    if (head < tail) {
-        for (int i = 0; i < tail - 1; i++) {
-            strcpy(fila[i].carro, fila[i + 1].carro);
-        }
 
-        tail--;
-        limpar();
-        lista_elementos();
-    } else {
-        printf("A loja está vazia!!\n\n");
-    }
-}
 
-void clear() {
-    for (int i = 0; i < TAMFILA; i++) {
-        strcpy(fila[i].carro, "");
-    }
-    head = 0;
-    tail = 0;
-}
-
-// ========== fim fila ============================
 
 //todas as structs 
 typedef struct {
@@ -146,10 +101,11 @@ void infoProduto(Produto prod);
 Produto pegarProdutoPorCodigo(int codigo);
 int* temNoCarrinho(int codigo);
 void menu_compra();
+void enqueue(); 
+void dequeue();
+void lista_elementos();
 
 
-static int contador_produto = 0; // para saber quantos produtos temos cadastrados
-static int contador_carrinho = 0; // para saber quantos produtos tem no carrinho
 
 
 int main(){
@@ -316,24 +272,79 @@ void menu_fila(){
     } while(opcao != 0);
 }
 
-void menu(){
+// void menu(){
+//     int opcao;
+//     do{
+//         printf("==== MENU ====\n");
+//         printf("1- Cadastrar produto\n");
+//         printf("2- Listar produtos\n");
+//         printf("3- Atender um cliente\n");
+//         printf("0- Sair\n");
+//         printf("Opcao: ");
+//         scanf("%d", &opcao);
+
+//         switch(opcao){
+//             case 1: cadastrarProduto(); break;
+//             case 2: listarProdutos(); break;
+//             case 3: menu_fila(); break;
+//             case 0: break;
+//             default: printf("Opção inválida.\n");
+//         }
+//     } while(opcao != 0);
+// }
+void menu() {
+    portuguesBrasil();
     int opcao;
     do{
-        printf("==== MENU ====\n");
-        printf("1- Cadastrar produto\n");
-        printf("2- Listar produtos\n");
-        printf("3- Atender um cliente\n");
-        printf("0- Sair\n");
-        printf("Opcao: ");
-        scanf("%d", &opcao);
+    printf("============================================\n");
+    printf("============= Bem-vindo(a) ==================\n");
+    printf("============== Lava Jato ====================\n");
+    printf("===============================================\n\n");
 
-        switch(opcao){
-            case 1: cadastrarProduto(); break;
-            case 2: listarProdutos(); break;
-            case 3: menu_fila(); break;
-            case 0: break;
-            default: printf("Opção inválida.\n");
-        }
+    printf("Selecione uma opcao abaixo: \n");
+    printf("0 - Chegou cliente!!\n");
+    printf("1 - Cadastrar servicos\n");
+    printf("2 - Listar servicos\n");
+    printf("3 - solicitar servicos\n");
+    printf("4 - Visualizar Carrinho\n");
+    printf("5 - Fechar pedido\n");
+    printf("6 - Sair do sistema\n");
+
+    
+    scanf("%d", &opcao);
+
+    switch (opcao) {
+        case 0:
+            limpar();
+            menu_fila();
+            break;
+        case 1:
+            cadastrarProduto();
+            break;
+        case 2:
+            listarProdutos();
+            break;
+        case 3:
+            comprarProduto();
+            break;
+        case 4:
+            visualizarCarrinho();
+            break;
+        case 5:
+            fecharPedido();
+            break;
+        case 6:
+            printf("Volte Sempre!!");
+            sleep(2); // para Windows
+            // sleep(2); para linux
+            exit(0);
+        default:
+            printf("opcao invalida!!");
+            sleep(2); // Windows
+            limpar();
+            menu();
+            break;
+    }
     } while(opcao != 0);
 }
 void menu_compra() {
@@ -396,3 +407,50 @@ int * temNoCarrinho(int codigo){
     }
     return retorno; // retorna o array com o resultado da busca
 }
+// Adiciona um cliente à fila
+void enqueue() {
+    limpeChar();
+    if (tail < TAMFILA) {
+        // Adiciona
+        printf("Informe o modelo do carro: ");
+        fgets(fila[tail].carro, 30, stdin);
+        tail++;
+        lista_elementos();
+    } else {
+        // Não adiciona
+        printf("A garagem está cheia, estacione fora da loja.\n\n");
+    }
+    limpar();
+    menu_compra();
+}
+void dequeue() {
+    if (head < tail) {
+        for (int i = 0; i < tail - 1; i++) {
+            strcpy(fila[i].carro, fila[i + 1].carro);
+        }
+
+        tail--;
+        limpar();
+        lista_elementos();
+    } else {
+        printf("A loja está vazia!!\n\n");
+    }
+}
+
+void clear() {
+    for (int i = 0; i < TAMFILA; i++) {
+        strcpy(fila[i].carro, "");
+    }
+    head = 0;
+    tail = 0;
+}
+void lista_elementos() {
+    printf("\n========  FILA ATUAL ==========\n");
+    for (int i = head; i < tail; i++) {
+        printf("%s ", fila[i].carro);
+    }
+    printf("\nhead: %d\n", head);
+    printf("\ntail: %d\n", tail);
+    printf("\n\n");
+}
+// ========== fim fila ============================
