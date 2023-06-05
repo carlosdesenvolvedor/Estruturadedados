@@ -74,32 +74,41 @@ void carregar_produtos() {
     fclose(arquivo); // Fecha o arquivo.
 }
 
+
+   
 void cadastrarProduto() {
-    printf("==== Cadastro de Produto ====\n");
-    if (contador_produto >= 100) {
-        printf("Limite de produtos atingido.\n");
-        return;
-    }
-    Produto novo_produto;
+printf("==== Cadastro de Produto ====\n");
+if (contador_produto >= 100) {
+printf("Limite de produtos atingido.\n");
+return;
+}
+Produto novo_produto;
+int codigo_existe = 0; // Flag para verificar se o código já existe
+    do {
     novo_produto.codigo = ultimo_codigo + 1; // Gera o código do novo produto.
     ultimo_codigo++;
+
     for (int i = 0; i < contador_produto; i++) {
         if (novo_produto.codigo == produto[i].codigo) { // Verifica se já existe um produto com o mesmo código.
-            printf("Ja existe um produto com esse codigo.\n");
-            return;
+            codigo_existe = 1; // Ativa a flag
+            break;
         }
     }
+} while (codigo_existe);
 
-    printf("Nome: ");
-    getchar();
-    fgets(novo_produto.nome, 100, stdin); // Lê o nome do novo produto.
-    novo_produto.nome[strcspn(novo_produto.nome, "\n")] = '\0'; // Remove o caractere de nova linha do nome.
-    printf("Preco: ");
-    scanf("%f", &novo_produto.preco); // Lê o preço do novo produto.
-    produto[contador_produto] = novo_produto; // Armazena o novo produto na estrutura de produtos.
-    contador_produto++; // Incrementa o contador de produtos.
-    printf("Produto cadastrado com sucesso!\n");
+printf("Nome: ");
+getchar();
+fgets(novo_produto.nome, 100, stdin); // Lê o nome do novo produto.
+novo_produto.nome[strcspn(novo_produto.nome, "\n")] = '\0'; // Remove o caractere de nova linha do nome.
+printf("Preco: ");
+scanf("%f", &novo_produto.preco); // Lê o preço do novo produto.
+produto[contador_produto] = novo_produto; // Armazena o novo produto na estrutura de produtos.
+contador_produto++; // Incrementa o contador de produtos.
+printf("Produto cadastrado com sucesso!\n");
 }
+    
+
+
 
 void listarProdutos(){
     printf("==== Produtos Cadastrados ====\n");
