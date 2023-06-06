@@ -1,6 +1,7 @@
 {
     "configurations": [
         {
+<<<<<<< HEAD
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**"
@@ -17,6 +18,23 @@
             "compilerArgs": [
                 "${workspaceFolder}/**",
                 "C:/msys64/mingw64/**"
+=======
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c17",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "linux-gcc-x64",
+            "compilerArgs": [
+                "CFLAGS := -nostdinc++ -m32",
+                "CFLAGS := -nostdinc++",
+                "CFLAGS += -m32",
+                "CFLAGS += --sysroot",
+                "CFLAGS += <arg>"
+>>>>>>> 131e7bd (json.js)
             ]
         }
     ],
