@@ -1,152 +1,271 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <locale.h>
 #include <gtk/gtk.h>
 
-void cadastrarProdutoClicked(GtkWidget *widget, gpointer data) {
-    printf("Cadastrar Produto\n");
+typedef struct {
+    char nome[30];
+    float preco;
+    int codigo;
+    int quantidade;
+} Produto;
 
-    // Obter os valores dos campos
-    GtkWidget *codigoEntry = GTK_WIDGET(gtk_builder_get_object(data, "codigoEntry"));
-    GtkWidget *nomeEntry = GTK_WIDGET(gtk_builder_get_object(data, "nomeEntry"));
-    GtkWidget *precoEntry = GTK_WIDGET(gtk_builder_get_object(data, "precoEntry"));
+typedef struct {
+    char nome[30];
+    char telefone[20];
+} Cliente;
 
-    const gchar *codigo = gtk_entry_get_text(GTK_ENTRY(codigoEntry));
-    const gchar *nome = gtk_entry_get_text(GTK_ENTRY(nomeEntry));
-    const gchar *preco = gtk_entry_get_text(GTK_ENTRY(precoEntry));
+Produto carrinho[100];
+int contador_carrinho = 0;
 
-    // Imprimir os valores
-    printf("Código: %s\n", codigo);
-    printf("Nome: %s\n", nome);
-    printf("Preço: %s\n", preco);
+Produto produto[100];
+int contador_produto = 0;
+
+void comprarProduto();
+void visualizarCarrinho();
+void sair();
+void cadastrarProduto();
+void cadastrarCliente();
+
+void infoProduto(Produto prod) {
+    printf("Código: %d\nNome: %s\nPreço: %.2f\n", prod.codigo, strtok(prod.nome, "\n"), prod.preco);
 }
 
-void cadastrarClienteClicked(GtkWidget *widget, gpointer data) {
-    printf("Cadastrar Cliente\n");
-
-    // Obter os valores dos campos
-    GtkWidget *codigoEntry = GTK_WIDGET(gtk_builder_get_object(data, "codigoClienteEntry"));
-    GtkWidget *nomeEntry = GTK_WIDGET(gtk_builder_get_object(data, "nomeClienteEntry"));
-    GtkWidget *enderecoEntry = GTK_WIDGET(gtk_builder_get_object(data, "enderecoEntry"));
-
-    const gchar *codigo = gtk_entry_get_text(GTK_ENTRY(codigoEntry));
-    const gchar *nome = gtk_entry_get_text(GTK_ENTRY(nomeEntry));
-    const gchar *endereco = gtk_entry_get_text(GTK_ENTRY(enderecoEntry));
-
-    // Imprimir os valores
-    printf("Código: %s\n", codigo);
-    printf("Nome: %s\n", nome);
-    printf("Endereço: %s\n", endereco);
+Produto pegarProdutoPorCodigo(int codigo) {
+    Produto p;
+    for (int i = 0; i < contador_produto; i++) {
+        if (produto[i].codigo == codigo) {
+            p = produto[i];
+            break;
+        }
+    }
+    return p;
 }
 
-void fecharPedidoClicked(GtkWidget *widget, gpointer data) {
-    printf("Fechar Pedido\n");
+void pausar() {
+#ifdef _WIN32
+    system("pause");
+#else
+    printf("Aperte qualquer botão para continuar...");
+    getchar();
+#endif
 }
 
-void verProdutosCadastradosClicked(GtkWidget *widget, gpointer data) {
-    printf("Ver Produtos Cadastrados\n");
+void limpar() {
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
 }
 
-void verCarrinhoClicked(GtkWidget *widget, gpointer data) {
-    printf("Ver Carrinho\n");
+void limpeChar() {
+#ifdef _WIN32
+    fflush(stdin);
+#else
+    getchar();
+#endif
 }
 
-void verPedidoFinalizadoClicked(GtkWidget *widget, gpointer data) {
-    printf("Ver Pedido Finalizado\n");
+void cadastrarProduto() {
+    GtkWidget *dialog;
+    GtkWidget *content_area;
+    GtkWidget *label_nome;
+    GtkWidget *entry_nome;
+    GtkWidget *label_preco;
+    GtkWidget *entry_preco;
+    gint response;
+
+    dialog = gtk_dialog_new_with_buttons("Cadastrar Produto", NULL, GTK_DIALOG_MODAL,
+                                         "Cadastrar", GTK_RESPONSE_ACCEPT, "Cancelar", GTK_RESPONSE_CANCEL, NULL);
+    content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+
+    label_nome = gtk_label_new("Nome do Produto:");
+    entry_nome = gtk_entry_new();
+    gtk_container_add(GTK_CONTAINER(content_area), label_nome);
+    gtk_container_add(GTK_CONTAINER(content_area), entry_nome);
+
+    label_preco = gtk_label_new("Preço do Produto:");
+    entry_preco = gtk_entry_new();
+    gtk_container_add(GTK_CONTAINER(content_area), label_preco);
+    gtk_container_add(GTK_CONTAINER(content_area), entry_preco);
+
+    gtk_widget_show_all(dialog);
+
+    response = gtk_dialog_run(GTK_DIALOG(dialog));
+
+    if (response == GTK_RESPONSE_ACCEPT) {
+        const gchar *nome = gtk_entry_get_text(GTK_ENTRY(entry_nome));
+        const gchar *preco = gtk_entry_get_text(GTK_ENTRY(entry_preco));
+
+        printf("Cadastro de produto\n");
+        printf("----------------------\n");
+        printf("Nome do produto: %s\n", nome);
+        printf("Preço do produto: %s\n", preco);
+        printf("Produto cadastrado com sucesso!\n");
+        printf("\n");
+
+        gtk_widget_destroy(dialog);
+    } else {
+        gtk_widget_destroy(dialog);
+    }
 }
 
-void sairClicked(GtkWidget *widget, gpointer data) {
-    printf("Sair\n");
-    gtk_main_quit();
+void cadastrarCliente() {
+    GtkWidget *dialog;
+    GtkWidget *content_area;
+    GtkWidget *label_nome;
+    GtkWidget *entry_nome;
+    GtkWidget *label_telefone;
+    GtkWidget *entry_telefone;
+    gint response;
+
+    dialog = gtk_dialog_new_with_buttons("Cadastrar Cliente", NULL, GTK_DIALOG_MODAL,
+                                         "Cadastrar", GTK_RESPONSE_ACCEPT, "Cancelar", GTK_RESPONSE_CANCEL, NULL);
+    content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+
+    label_nome = gtk_label_new("Nome do Cliente:");
+    entry_nome = gtk_entry_new();
+    gtk_container_add(GTK_CONTAINER(content_area), label_nome);
+    gtk_container_add(GTK_CONTAINER(content_area), entry_nome);
+
+    label_telefone = gtk_label_new("Telefone do Cliente:");
+    entry_telefone = gtk_entry_new();
+    gtk_container_add(GTK_CONTAINER(content_area), label_telefone);
+    gtk_container_add(GTK_CONTAINER(content_area), entry_telefone);
+
+    gtk_widget_show_all(dialog);
+
+    response = gtk_dialog_run(GTK_DIALOG(dialog));
+
+    if (response == GTK_RESPONSE_ACCEPT) {
+        const gchar *nome = gtk_entry_get_text(GTK_ENTRY(entry_nome));
+        const gchar *telefone = gtk_entry_get_text(GTK_ENTRY(entry_telefone));
+
+        printf("Cadastro de cliente\n");
+        printf("----------------------\n");
+        printf("Nome do cliente: %s\n", nome);
+        printf("Telefone do cliente: %s\n", telefone);
+        printf("Cliente cadastrado com sucesso!\n");
+        printf("\n");
+
+        gtk_widget_destroy(dialog);
+    } else {
+        gtk_widget_destroy(dialog);
+    }
 }
 
-void createGUI(int argc, char *argv[]) {
-    GtkWidget *window;
-    GtkWidget *grid;
-    GtkWidget *btnCadastrarProduto;
-    GtkWidget *btnCadastrarCliente;
-    GtkWidget *btnFecharPedido;
-    GtkWidget *btnVerProdutosCadastrados;
-    GtkWidget *btnVerCarrinho;
-    GtkWidget *btnVerPedidoFinalizado;
-    GtkWidget *btnSair;
-    GtkWidget *codigoEntry;
-    GtkWidget *nomeEntry;
-    GtkWidget *precoEntry;
-    GtkWidget *codigoClienteEntry;
-    GtkWidget *nomeClienteEntry;
-    GtkWidget *enderecoEntry;
-    GtkBuilder *builder;
+void comprarProduto() {
+    int codigo;
+    printf("Digite o código do produto que deseja comprar: ");
+    scanf("%d", &codigo);
 
-    // Inicializar GTK
-    gtk_init(&argc, &argv);
+    Produto p = pegarProdutoPorCodigo(codigo);
 
-    // Criar janela principal
-    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(window), "Minha Aplicacao");
-    gtk_container_set_border_width(GTK_CONTAINER(window), 10);
-    gtk_widget_set_size_request(window, 300, 200);
+    if (p.codigo == 0) {
+        printf("Produto não encontrado!\n");
+    } else {
+        printf("Produto encontrado!\n");
+        printf("Nome: %s\n", strtok(p.nome, "\n"));
+        printf("Preço: %.2f\n", p.preco);
+        printf("Quantidade disponível: %d\n", p.quantidade);
 
-    g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+        int quantidade;
+        printf("Digite a quantidade que deseja comprar: ");
+        scanf("%d", &quantidade);
 
-    // Criar grid
-    grid = gtk_grid_new();
-    gtk_container_add(GTK_CONTAINER(window), grid);
+        if (quantidade <= p.quantidade) {
+            Produto novoProduto;
+            strcpy(novoProduto.nome, p.nome);
+            novoProduto.preco = p.preco;
+            novoProduto.codigo = p.codigo;
+            novoProduto.quantidade = quantidade;
+            carrinho[contador_carrinho++] = novoProduto;
 
-    // Carregar interface do arquivo Glade
-    builder = gtk_builder_new();
-    gtk_builder_add_from_file(builder, "interface.glade", NULL);
+            printf("Produto adicionado ao carrinho com sucesso!\n");
+        } else {
+            printf("Não há quantidade suficiente em estoque!\n");
+        }
+    }
 
-    // Obter referências para os widgets
-    codigoEntry = GTK_WIDGET(gtk_builder_get_object(builder, "codigoEntry"));
-    nomeEntry = GTK_WIDGET(gtk_builder_get_object(builder, "nomeEntry"));
-    precoEntry = GTK_WIDGET(gtk_builder_get_object(builder, "precoEntry"));
-    codigoClienteEntry = GTK_WIDGET(gtk_builder_get_object(builder, "codigoClienteEntry"));
-    nomeClienteEntry = GTK_WIDGET(gtk_builder_get_object(builder, "nomeClienteEntry"));
-    enderecoEntry = GTK_WIDGET(gtk_builder_get_object(builder, "enderecoEntry"));
-    btnCadastrarProduto = GTK_WIDGET(gtk_builder_get_object(builder, "btnCadastrarProduto"));
-    btnCadastrarCliente = GTK_WIDGET(gtk_builder_get_object(builder, "btnCadastrarCliente"));
+    pausar();
+}
 
-    // Anexar widgets ao grid
-    gtk_grid_attach(GTK_GRID(grid), codigoEntry, 0, 0, 1, 1);
-    gtk_grid_attach(GTK_GRID(grid), nomeEntry, 1, 0, 1, 1);
-    gtk_grid_attach(GTK_GRID(grid), precoEntry, 2, 0, 1, 1);
-    gtk_grid_attach(GTK_GRID(grid), codigoClienteEntry, 0, 1, 1, 1);
-    gtk_grid_attach(GTK_GRID(grid), nomeClienteEntry, 1, 1, 1, 1);
-    gtk_grid_attach(GTK_GRID(grid), enderecoEntry, 2, 1, 1, 1);
-    gtk_grid_attach(GTK_GRID(grid), btnCadastrarProduto, 0, 2, 1, 1);
-    gtk_grid_attach(GTK_GRID(grid), btnCadastrarCliente, 1, 2, 1, 1);
+void visualizarCarrinho() {
+    printf("Carrinho de Compras\n");
+    printf("----------------------\n");
 
-    // Conectar os sinais de clique aos manipuladores de eventos
-    g_signal_connect(btnCadastrarProduto, "clicked", G_CALLBACK(cadastrarProdutoClicked), builder);
-    g_signal_connect(btnCadastrarCliente, "clicked", G_CALLBACK(cadastrarClienteClicked), builder);
+    if (contador_carrinho == 0) {
+        printf("Carrinho vazio!\n");
+    } else {
+        float total = 0;
+        for (int i = 0; i < contador_carrinho; i++) {
+            Produto p = carrinho[i];
+            printf("Item %d:\n", i + 1);
+            printf("Código: %d\n", p.codigo);
+            printf("Nome: %s\n", strtok(p.nome, "\n"));
+            printf("Preço: %.2f\n", p.preco);
+            printf("Quantidade: %d\n", p.quantidade);
+            printf("\n");
 
-    // Adicionar os botões adicionais e seus manipuladores de eventos
-    btnFecharPedido = gtk_button_new_with_label("Fechar Pedido");
-    g_signal_connect(btnFecharPedido, "clicked", G_CALLBACK(fecharPedidoClicked), NULL);
-    gtk_grid_attach(GTK_GRID(grid), btnFecharPedido, 0, 3, 1, 1);
+            total += p.preco * p.quantidade;
+        }
 
-    btnVerProdutosCadastrados = gtk_button_new_with_label("Ver Produtos Cadastrados");
-    g_signal_connect(btnVerProdutosCadastrados, "clicked", G_CALLBACK(verProdutosCadastradosClicked), NULL);
-    gtk_grid_attach(GTK_GRID(grid), btnVerProdutosCadastrados, 1, 3, 1, 1);
+        printf("Total: %.2f\n", total);
+    }
 
-    btnVerCarrinho = gtk_button_new_with_label("Ver Carrinho");
-    g_signal_connect(btnVerCarrinho, "clicked", G_CALLBACK(verCarrinhoClicked), NULL);
-    gtk_grid_attach(GTK_GRID(grid), btnVerCarrinho, 0, 4, 1, 1);
+    pausar();
+}
 
-    btnVerPedidoFinalizado = gtk_button_new_with_label("Ver Pedido Finalizado");
-    g_signal_connect(btnVerPedidoFinalizado, "clicked", G_CALLBACK(verPedidoFinalizadoClicked), NULL);
-    gtk_grid_attach(GTK_GRID(grid), btnVerPedidoFinalizado, 1, 4, 1, 1);
-
-    btnSair = gtk_button_new_with_label("Sair");
-    g_signal_connect(btnSair, "clicked", G_CALLBACK(sairClicked), NULL);
-    gtk_grid_attach(GTK_GRID(grid), btnSair, 0, 5, 1, 1);
-
-    // Mostrar todos os widgets
-    gtk_widget_show_all(window);
-
-    // Iniciar loop principal do GTK
-    gtk_main();
+void sair() {
+    printf("Saindo do programa...\n");
+    exit(0);
 }
 
 int main(int argc, char *argv[]) {
-    createGUI(argc, argv);
+    gtk_init(&argc, &argv);
+
+    GtkWidget *window;
+    GtkWidget *grid;
+    GtkWidget *button_comprar;
+    GtkWidget *button_carrinho;
+    GtkWidget *button_cadastrar_produto;
+    GtkWidget *button_cadastrar_cliente;
+    GtkWidget *button_sair;
+
+    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_title(GTK_WINDOW(window), "Sistema de Vendas");
+    gtk_container_set_border_width(GTK_CONTAINER(window), 10);
+    gtk_widget_set_size_request(window, 400, 300);
+    g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+
+    grid = gtk_grid_new();
+    gtk_container_add(GTK_CONTAINER(window), grid);
+
+    button_comprar = gtk_button_new_with_label("Comprar Produto");
+    g_signal_connect(button_comprar, "clicked", G_CALLBACK(comprarProduto), NULL);
+    gtk_grid_attach(GTK_GRID(grid), button_comprar, 0, 0, 1, 1);
+
+    button_carrinho = gtk_button_new_with_label("Visualizar Carrinho");
+    g_signal_connect(button_carrinho, "clicked", G_CALLBACK(visualizarCarrinho), NULL);
+    gtk_grid_attach(GTK_GRID(grid), button_carrinho, 1, 0, 1, 1);
+
+    button_cadastrar_produto = gtk_button_new_with_label("Cadastrar Produto");
+    g_signal_connect(button_cadastrar_produto, "clicked", G_CALLBACK(cadastrarProduto), NULL);
+    gtk_grid_attach(GTK_GRID(grid), button_cadastrar_produto, 0, 1, 1, 1);
+
+    button_cadastrar_cliente = gtk_button_new_with_label("Cadastrar Cliente");
+    g_signal_connect(button_cadastrar_cliente, "clicked", G_CALLBACK(cadastrarCliente), NULL);
+    gtk_grid_attach(GTK_GRID(grid), button_cadastrar_cliente, 1, 1, 1, 1);
+
+    button_sair = gtk_button_new_with_label("Sair");
+    g_signal_connect(button_sair, "clicked", G_CALLBACK(sair), NULL);
+    gtk_grid_attach(GTK_GRID(grid), button_sair, 0, 2, 2, 1);
+
+    gtk_widget_show_all(window);
+
+    gtk_main();
+
     return 0;
 }

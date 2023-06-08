@@ -315,7 +315,7 @@ void comprarProduto() {
                 tem_mercado = 1;
 
                 if (contador_carrinho > 0) { // esse produto que foi encontrado já tem no carrinho
-                    int* retorno = temNoCarrinho(codigo);
+                    int* retorno = (int *)temNoCarrinho(codigo);
 
                     if (retorno[0] == 1) { // produto já tem no carrinho
                         // tem esse produto com esse código no carrinho
