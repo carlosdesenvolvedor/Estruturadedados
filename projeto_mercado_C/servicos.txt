@@ -1,0 +1,15 @@
+Código: 1
+Nome: limpeza
+Preço: 150,50
+Quantidade: 100
+
+Código: 2
+Nome: limpeza 2
+Preço: 180,00
+Quantidade: 100
+
+Código: 3
+Nome: limpeza 3
+Preço: 200,00
+Quantidade: 100
+

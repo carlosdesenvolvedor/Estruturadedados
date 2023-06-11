@@ -16,9 +16,8 @@ int contador_servicos = 0;
 void pausar() {
     printf("Pressione Enter para continuar...");
     while (getchar() != '\n');
-    getchar();
+    getchar(); 
 }
-
 void cadastrarServico(GtkWidget *widget, gpointer data) {
     GtkWidget *dialog;
     GtkWidget *content_area;
@@ -61,19 +60,92 @@ void cadastrarServico(GtkWidget *widget, gpointer data) {
         float preco = atof(preco_str);
         int quantidade = atoi(quantidade_str);
 
-        Servico novoServico;
-        novoServico.codigo = contador_servicos + 1;
-        strcpy(novoServico.nome, nome);
-        novoServico.preco = preco;
-        novoServico.quantidade = quantidade;
+        // Abrir o arquivo "servicos.txt" em modo de leitura
+        FILE *arquivo = fopen("servicos.txt", "r");
+        if (arquivo != NULL) {
+            // Encontrar o maior código existente no arquivo
+            int maior_codigo = 0;
+            char linha[100];
+            while (fgets(linha, sizeof(linha), arquivo) != NULL) {
+                int codigo;
+                if (sscanf(linha, "Código: %d", &codigo) == 1) {
+                    if (codigo > maior_codigo) {
+                        maior_codigo = codigo;
+                    }
+                }
+            }
 
-        servicos[contador_servicos++] = novoServico;
+            // Fechar o arquivo
+            fclose(arquivo);
 
-        printf("Serviço cadastrado com sucesso!\n");
+            // Atribuir o código do novo serviço como sendo o maior código encontrado mais um
+            int novo_codigo = maior_codigo + 1;
+
+            Servico novoServico;
+            novoServico.codigo = novo_codigo;
+            strcpy(novoServico.nome, nome);
+            novoServico.preco = preco;
+            novoServico.quantidade = quantidade;
+
+            servicos[contador_servicos++] = novoServico;
+
+            printf("Serviço cadastrado com sucesso!\n");
+
+            // Abrir o arquivo "servicos.txt" no modo de escrita
+            arquivo = fopen("servicos.txt", "a");
+            if (arquivo != NULL) {
+                // Escrever os dados do novo serviço no arquivo
+                fprintf(arquivo, "Código: %d\n", novoServico.codigo);
+                fprintf(arquivo, "Nome: %s\n", novoServico.nome);
+                fprintf(arquivo, "Preço: %.2f\n", novoServico.preco);
+                fprintf(arquivo, "Quantidade: %d\n", novoServico.quantidade);
+                fprintf(arquivo, "\n");
+
+                // Fechar o arquivo
+                fclose(arquivo);
+
+                printf("Dados do serviço armazenados no arquivo 'servicos.txt'\n");
+            } else {
+                printf("Erro ao abrir o arquivo 'servicos.txt' para escrita\n");
+            }
+        } else {
+            // Caso o arquivo não exista, criar um novo arquivo "servicos.txt"
+            arquivo = fopen("servicos.txt", "w");
+            if (arquivo != NULL) {
+                int novo_codigo = 1;  // Primeiro código para um novo arquivo
+
+                Servico novoServico;
+                novoServico.codigo = novo_codigo;
+                strcpy(novoServico.nome, nome);
+                novoServico.preco = preco;
+                novoServico.quantidade = quantidade;
+
+                servicos[contador_servicos++] = novoServico;
+
+                printf("Serviço cadastrado com sucesso!\n");
+
+                // Escrever os dados do novo serviço no arquivo
+                fprintf(arquivo, "Código: %d\n", novoServico.codigo);
+                fprintf(arquivo, "Nome: %s\n", novoServico.nome);
+                fprintf(arquivo, "Preço: %.2f\n", novoServico.preco);
+                fprintf(arquivo, "Quantidade: %d\n", novoServico.quantidade);
+                fprintf(arquivo, "\n");
+
+                // Fechar o arquivo
+                fclose(arquivo);
+
+                printf("Dados do serviço armazenados no arquivo 'servicos.txt'\n");
+            } else {
+                printf("Erro ao criar o arquivo 'servicos.txt'\n");
+            }
+        }
     }
 
     gtk_widget_destroy(dialog);
 }
+
+
+
 
 void comprarServico(GtkWidget *widget, gpointer data) {
     GtkWidget *dialog;
