@@ -10,13 +10,18 @@
                 "UNICODE",
                 "_UNICODE"
             ],
-            "compilerPath": "C:\\MinGW\\bin\\gcc.exe",
+            "compilerPath": "/usr/bin/gcc",
             "cStandard": "c11",
             "cppStandard": "gnu++14",
             "intelliSenseMode": "windows-gcc-x86",
             "compilerArgs": [
                 "${workspaceFolder}/**",
-                "C:/msys64/mingw64/**"
+                "/usr/include/**",
+      
+                "/usr/includePath/gtk",
+                "/usr/include/gtk-4.0",
+                "/usr/include/gtk-3.0"
+                
 
             ]
         }

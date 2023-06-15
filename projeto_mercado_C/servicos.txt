@@ -13,3 +13,13 @@ Nome: limpeza 3
 Preço: 200,00
 Quantidade: 100
 
+Código: 4
+Nome: dog
+Preço: 10,00
+Quantidade: 100
+
+Código: 5
+Nome: limpeza
+Preço: 150,00
+Quantidade: 100
+

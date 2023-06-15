@@ -1,0 +1,2 @@
+gcc novo.c -o miv  `pkg-config --cflags --libs gtk+-3.0`
+depois ./miv
